@@ -1,2 +1,6 @@
-# postfix-dovecot-mysql-roundcube
-postfix with dovecot and mysql and roundcube
+## postfix-dovecot-mysql-roundcube
+postfix + dovecot with mysql and roundcube
+
+
+##INSTALL
+

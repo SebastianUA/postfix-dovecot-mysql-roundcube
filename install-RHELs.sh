@@ -29,10 +29,10 @@ rm -rf /etc/my.cnf
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #moving to /var/www/
-mv -f postfix-dovecot-mysql-roundcube/postfix/roundcubemail /var/www/
-mv -f postfix-dovecot-mysql-roundcube/postfix/iredadmin /var/www/
+mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/
+mv -f postfix-dovecot-mysql-roundcube/iredadmin /var/www/
 
-#create DBs
+#create DBs 
 mysql -uroot -p << EOF
 
 CREATE database iredadmin;
@@ -44,7 +44,7 @@ GRANT ALL ON vmail.* TO vmail@localhost IDENTIFIED BY 'vmail_pw';
 GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'vmailadmin_pw';
 exit;
 EOF
-service mysqld restart
+
 
 #restore DBs
 mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin.sql
@@ -52,6 +52,13 @@ mysql -uroot -p roundcube < /usr/local/src/postfix-dovecot-mysql-roundcube/Struc
 mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
 
 #create new admin user 
+
+
+#restart all services
+/etc/init.d/mysqld restart
+service httpd restart
+service postfix restart
+service dovecot restart
 
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube

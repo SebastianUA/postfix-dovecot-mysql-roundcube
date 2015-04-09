@@ -1,0 +1,158 @@
+= 0.4.1 =
+    * Fixed issues:
+        - Not correctly handle incorrect login username/password for OpenLDAP
+          backend.
+
+= 0.4 =
+    * Improvements:
+        + Able to generate 'CRAM-MD5' password hash with command `doveadm pw`.
+        + Able to generate bcrypt password hash with Python module 'bcrypt' or
+          'py-bcrypt'.
+          NOTE: It works on BSD systems, but not Linux. Since libc shpped in
+                most Linux distributions doesn't bcrypt, Dovecot cannot verify
+                bcrypt hash on Linux.
+
+    * New tool scripts:
+        - tools/upgrade_iredadmin.py.
+          Used to upgrade iRedAdmin from old release. Works with both
+          iRedAdmin open source edition and iRedAdmin-Pro.
+
+        - tools/cleanup_amavisd_db.py.
+          Used to Cleanup old records from Amavisd database. It's safe to
+          execute it manually.
+
+        - tools/sync_cluebringer_internal_domains.py.
+          Sync mail domain names from SQL/LDAP to cluebringer policy group
+          '%internal_domains'.
+
+    * Fixed issues:
+        - Use VARCHAR(40) to store both IPv4 and IPv6 address.
+        - Incorrect regular expression which not support IDN domain name.
+        - Incorrect link in sub-navication bar in account profile page.
+        - Missing LDAP attribute/value pairs required by Dovecot:
+            o enabledService=indexer-worker.
+            o enabledService=dsync
+
+= 0.3.3 =
+    * Fixed issues:
+        - Not remove unused SQL columns for MySQL/PostgreSQL backends.
+        - Not render pages in selected language in drop-down list in Login page
+          after logged in.
+        - Not correctly show current language in drop-down list in Login page.
+
+= 0.3.2 =
+    * Fixed issues:
+        - Not add enabledService=lmtp for newly created LDAP mail user.
+
+= 0.3.1 =
+    * Fixed:
+        - [ldap] Didn't add 'enabledService=doveadm' for newly created mail user.
+
+    * Updated translation:
+        - hu_HU (Hungarian). Thanks Balázsi Gábor <gapcsi _at_ gmail dot com>.
+
+= 0.3 =
+    * Able to choose addition password scheme as default one in OpenLDAP
+      backend: SSHA512, MD5.
+    * Use python source file as config file. You can convert old ini config
+      file with script tools/convert_ini_to_py.py.
+
+= 0.2.2 =
+    * New SQL table: deleted_mailboxes. Required by iRedAdmin-Pro, used to
+      store basic info of deleted user mailbox, majorly maildir path.
+    * New or updated translations:
+        + Korean (ko_KR). Thanks Bosung Lee <gotocloud _at_ gotocloud.co.kr>
+
+= 0.2.1 =
+    * Improvements:
+        + [ldap] Able to manage first/last name in user/admin profile page.
+        + New password schemes support: SSHA, SSHA512.
+          Note: SSHA512 requires Dovecot-2.0 (and later), Python-2.5 (or
+          later).
+
+    * Fixed:
+        - Incorrectly unset domainGlobalAdmin status in session after updating
+          admin profile.
+          Thanks Tue <tt _at_ atorbital.com> and escu <cosmin.necula@gmail> for
+          the report.
+        - [ldap] Normal user can login and update their own profile, includes
+          mail quota.
+          Thanks Wesley MOUEDINE ASSABY <wesley _at_ aise.re> for the report.
+
+    * Updated translations:
+        + Update Czech (cs_CZ). Thanks Roman Pudil <roman _at_ webhosting.fm>.
+
+= 0.2 =
+    * Fixed:
+        + [mysql/pgsql] List all users in Admins page.
+
+= 0.1.9 =
+    * New features:
+        + Mark mail user as global admin.
+
+    * Fixed:
+        + Add attribute/value for mail user required by Dovecot-2:
+          enabledService=lib-storage.
+        + Didn't remove SQL records of real-time mailbox quota while deleting 
+          mail domain or user.
+
+    * New and updated translations:
+        + Czech (cs_CZ). Thanks Roman Pudil <roman _at_ webhosting.fm>.
+
+= 0.1.8 =
+    * Fixed:
+        + [pgsql] Don't show link to view all mail aliases in domain profile page.
+        + Cannot update user password in pgsql backend.
+
+= 0.1.7 =
+    * Based on iRedAdmin-Pro-LDAP-1.7.0, iRedAdmin-Pro-MySQL-1.4.0,
+      iRedAdmin-Pro-PGSQL-1.0.
+
+= 0.1.6 =
+    * [MySQL] Better SQL performance while listing all domains.
+      Thanks atros <christian (at) eol.co.nz>.
+    * [LDAP] Add enabledService=lda for newly created mail user. Required by
+      Dovecot 2.x.
+    * [MySQL] Add an alias account for newly created mail user (address=goto).
+
+= 0.1.5 =
+    * Escape untrusted variables in template files.
+    * Allow to use domain names which end with 2-6 chars.
+      Thanks Julian P. <@consistency.at>.
+
+= 0.1.4 =
+    * Based on iRedAdmin-Pro-LDAP-1.4.0, iRedAdmin-Pro-MySQL-1.0.
+    * Removed settings: mailbox_type, hashed_maildir.
+
+= 0.1.3 =
+    * New translation: pl_PL. Thanks Marcin Oleksinski.
+    * Add 'enabledService: internal'.
+    * Add storage_node in settings.ini, required in iRedMail-0.6.0.
+
+= 0.1.2 =
+    * Add objectClass=amavisAccount for mail user by default.
+    * Add enabledService: sieve, sievesecured. Used for Dovecot-1.2.
+    * New: Allow to switch language in login page.
+    * New translation: de_DE (Deutsch). Thanks Jan Zude (caparcona <at> web.de).
+    * New translation: es_ES. Thanks yrjc2004@gmail.
+    * New translation: pt_BR (Brazilian Portuguese). Thanks giorgiolago@gmail.
+    * New translation: hu_HU (Hungarian). Thanks zolikusz@gmail.
+
+= 0.1.1 =
+    * Add run-time language switch support.
+    * Add enabledService={pop3secured,imapsecured,managesievesecured}.
+    * Add new translation: vi_VN (Vietnamese), zh_CN, zh_TW.
+    * Fixed: use 'ENINGE=' instead of 'TYPE='. Thanks peterpp @forum.
+    * Show accountStatus image while view/update account profile.
+    * Add ou=Externals by default.
+    * Show correct http error 404 page.
+    * Convert new account name to lower case.
+    * Fix incorrect maildir path: missing '/'.
+    * Add French translation. Thanks Mael Lesaout (mael.lesaout@gmail).
+    * Show multiple values of phone number (telephoneNumber).
+    * Show user id while list users.
+    * Ability to modify user id (employeeNumber).
+    * Fix issue while submit empty display name (cn).
+
+= 0.1 =
+    * Initiaize release.

@@ -1,0 +1,121 @@
+{# version, hostname, uptime, loadavg, #}
+
+{% extends "layout.html" %}
+
+{% block title %} {{ _('Dashboard') }} {% endblock %}
+{% block navlinks_active_dashboard %}class="active"{% endblock %}
+
+{% block main %}
+<div class="columns clear">
+    <div class="col1-3">
+        <h2>{{ _('System Information') }}</h2>
+        <div class="box-wrap clear">
+            <table class="basic" cellspacing="0">
+                <tbody>
+
+                {% if session.get('domainGlobalAdmin') is sameas true %}
+                    <tr>
+                        <th>iRedAdmin</th>
+                        <td>v{{ version |e }}
+                            {% if backend == 'mysql' %}
+                                (MySQL)
+                            {% elif backend == 'ldap' %}
+                                (LDAP)
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% if newVersionInfo[0] is sameas false %}
+                        <tr>
+                            <td colspan="2">
+                                {# Error while checking #}
+                                <span class="required">{{ _('Error while checking new version: %s') |format(newVersionInfo[1] |e) }}</span>
+                            </td>
+                        </tr>
+                    {% elif newVersionInfo[0] is sameas true %}
+                        {# New version available #}
+                        {% if newVersionInfo[1].version > version %}
+                            <tr>
+                                <td colspan="2">
+                                    <span class="required">{{ _("Update available: <a href='%s' target='_blank'>v%s</a>") |format(newVersionInfo[1].url |e, newVersionInfo[1].version |e,) }}</span>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+
+                    {# ---- System Information ---- #}
+                    <tr>
+                        <th>{{ _('Hostname') }}</th>
+                        <td>{{ hostname |e }}</td>
+                    </tr>
+
+                    {% if uptime is not sameas none and uptime|length == 3 %}
+                    <tr>
+                        <th>{{ _('Uptime') }}</th>
+                        <td>{{ _('%s days, %s hours, %s minutes.') |format(uptime[0] |e, uptime[1] |e, uptime[2] |e ) }}</td>
+                    </tr>
+                    {% endif %}
+
+                    <tr>
+                        <th>{{ _('Server Load') }}</th>
+                        <td>{{ '%s, %s, %s.' |format(loadavg[0] |e, loadavg[1] |e, loadavg[2] |e) }}</td>
+                    </tr>
+
+                    {# ---- Network interfaces and IP info ---- #}
+                    {% for netif in netif_data.items() %}
+                        {% if netif[0] != 'lo' %}
+                        <tr>
+                            <th>{{ _('Network') }} ({{ netif[0] |e }})</th>
+                            <td>{{ netif[1]['addr'] }}<span class="grey">/{{ netif[1]['netmask'] |e }}</span></td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}{# global admin #}
+                </tbody>
+            </table>
+        </div> {# .box-wrap #}
+    </div>{# .col1-3 #}
+    <div class="col2-4">
+        <div class="box-wrap clear">
+            <p>You're running open source edition of iRedAdmin (web admin panel), it has less features than the full-featured Pro edition - iRedAdmin-Pro. It's able to achieve below features manually with tools like SQL/LDAP command line tools or web applications like phpLDAPadmin, phpMyAdmin, phpPgAdmin, but it's easier to manage them with iRedAdmin-Pro. <a href="http://www.iredmail.org/admin_panel.html">Upgrade to Pro edition to get more features</a></p>
+            <ul class="standard clean-padding bt-space10">
+                <li>self-service: user is able to login to iRedAdmin-Pro to
+                    <ul>
+                        <li>change password</li>
+                        <li>set mail forwarding</li>
+                        <li>set white/blacklist</li>
+                        <li>manage quarantined mails</li>
+                        <li>manage basic spam policy</li>
+                    </ul>
+                </li>
+                <li>Unlimited number of mail lists/aliases</li>
+                <li>Per-user real-time quota usage report</li>
+                <li>Per-user forwarding, bcc, relay, aliases support</li>
+                <li>Alias domain support</li>
+                <li>Per-domain bcc, relay, catch-all, account limit control</li>
+                <li>Per-domain and per-user service restrictions</li>
+                <li>Policyd/Cluebringer integration:
+                    <ul class="standard clean-padding bt-space10">
+                        <li>Greylisting opt-in/out</li>
+                        <li>Blacklist and whitelist management</li>
+                        <li>Per-domain and per-user throttling control</li>
+                    </ul>
+                </li>
+                <li>Amavisd integration:
+                    <ul class="standard clean-padding bt-space10">
+                        <li>Quarantining SPAM, VIRUS and clean mails into SQL database</li>
+                        <li>View mail headers and body of quarantined mails</li>
+                        <li>Release or delete quarantined emails</li>
+                        <li>View log of received and sent mails</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div><!-- .col2-4 -->
+</div>{# .columns #}
+
+{% endblock main %}
+
+{% block js %}
+    {{ load_jquery(['tablesorter'], nonSortedCols=[0,6]) }}
+{% endblock js %}

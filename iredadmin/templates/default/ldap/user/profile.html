@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% from "macros/general.html" import
+        display_subnav,
+        display_csrf_token,
+        display_input_cn,
+        display_preferred_language,
+        display_quota,
+        display_input_employeeid,
+        display_input_jobtitle,
+        display_input_mobile,
+        display_input_phone,
+        display_account_status,
+        display_mark_user_as_admin,
+        display_reset_password,
+        display_random_password,
+        display_button_submit,
+        with context
+        %}
+
+{% from "macros/msgHandlers.html" import userMsgHandler with context %}
+
+{% block title %}{{ _('Edit account profile') }}{% endblock %}
+{% block navlinks_active_domains %}class="active"{% endblock %}
+
+{# User profile. #}
+
+{% set user = user_profile[0] %}
+{% set entries = user[1] %}
+
+{% set mail = entries.get('mail')[0] |e %}
+{% set cn = entries.get('cn', [ mail.split('@')[0] ])[0].decode('utf-8') |e %}
+{% set username, cur_domain = mail.split('@', 1) %}
+{% set employeeNumber = entries.get('employeeNumber', [''])[0].decode('utf-8') |e %}
+{% set accountStatus = entries.get('accountStatus', ['disabled'])[0] |e %}
+
+{# Get enabledService #}
+{% if profile_type in ['general', 'forwarding', 'aliases', 'advanced',] %}
+    {% set enabledService = entries.get('enabledService', ['']) %}
+{% endif %}
+
+{% if profile_type == 'general' %}
+    {% set jobtitle = entries.get('title', [''])[0].decode('utf-8') |e %}
+    {% set mobile = entries.get('mobile', [''])[0] |e %}
+    {% set telephoneNumber = entries.get('telephoneNumber', []) %}
+    {% set mailQuota = '%d' % (entries.get('mailQuota', [0])[0] |int /1024/1024) %}
+
+    {% set first_name = entries.get('givenName', [''])[0].decode('utf-8') |e %}
+    {% set last_name = entries.get('sn', [''])[0].decode('utf-8') |e %}
+{% endif %}
+
+{% block breadcrumb %}
+    {% set crumbs = [
+            (ctx.homepath + '/domains', _('All domains'),),
+            (ctx.homepath + '/profile/domain/general/' + cur_domain, cur_domain,),
+            (ctx.homepath + '/users/' + cur_domain, _('Users'),),
+            ('active', ctx.homepath + '/profile/user/general/' + mail, _('Profile of user:') + ' ' + mail,),
+            ]
+            %}
+    {{ display_subnav(crumbs) }}
+{% endblock %}
+
+{% block main %}
+
+{#-- Show system message --#}
+{{ userMsgHandler(msg) }}
+
+{% set navlinks = [
+            ('general', _('General'), [true,]),
+            ('password', _('Password'), [true,]),
+            ]
+            %}
+
+    <div class="content-box">
+        <div class="box-body">
+            <div class="box-header clear">
+                <ul class="tabs clear">
+                    {% for nav in navlinks %}
+                        {% if not false in nav[2] and not none in nav[2] %}
+                            <li {% if profile_type == nav[0] %}class="active"{% endif %}><a href="{{ctx.homepath}}/profile/user/{{nav[0]}}/{{mail}}">{{ nav[1] }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+                <h2>{{ _('Profile of user:') }} {{ mail }}</h2>
+            </div>
+
+            <div class="box-wrap clear">
+            
+<form name="{{profile_type}}" method="post" action="{{ctx.homepath}}/profile/user/{{profile_type}}/{{mail}}">
+    {{ display_csrf_token() }}
+
+    {% if profile_type == 'general' %}
+        <div class="columns clear">
+            <div class="col2-3">
+                {{ display_account_status(accountStatus) }}
+
+                {# Domain admin and global admin #}
+                {{ display_mark_user_as_admin(
+                        is_domain_admin='domainadmin' in enabledService,
+                        is_global_admin=entries.get('domainGlobalAdmin', ['no'])[0],
+                ) }}
+
+                <div class="bt-space10"></div>
+                {{ display_input_cn(cn,
+                                    tooltip=_('Full name'),
+                                    show_first_last_name=true,
+                                    first_name=first_name,
+                                    last_name=last_name) }}
+                {{ display_preferred_language(value=entries.get('preferredLanguage', ['en_US'])[0], languagemaps=languagemaps) }}
+                {{ display_quota(value=mailQuota, show_value_in_input=true) }}
+
+                <div class="bt-space10"></div>
+                {{ display_input_employeeid(employeeNumber) }}
+                {{ display_input_jobtitle(jobtitle) }}
+
+                <div class="bt-space10"></div>
+                {{ display_input_mobile(value=mobile) }}
+                {{ display_input_phone(value=telephoneNumber) }}
+            </div>{#-- .col2-3 --#}
+        </div>{#-- .columns --#}
+    {% elif profile_type == 'password' %}
+        <div class="columns clear">
+            <div class="col3-4">
+                {# Password length #}
+                {% set minPasswordLength = domainAccountSetting.get('minPasswordLength', '0') %}
+                {% set maxPasswordLength = domainAccountSetting.get('maxPasswordLength', '0') %}
+
+                {{ display_reset_password(
+                        min_passwd_length=minPasswordLength,
+                        max_passwd_length=maxPasswordLength,
+                        show_confirmpw=true,
+                        store_in_plain=true,
+                        )
+                }}
+            </div>
+
+            <div class="col1-4 lastcol">
+                {{ display_random_password(maxPasswordLength) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {{ display_button_submit() }}
+</div>
+</div>
+</div>
+</form>
+{% endblock main %}

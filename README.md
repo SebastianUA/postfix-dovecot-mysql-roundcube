@@ -9,7 +9,8 @@ postfix + dovecot with mysql and roundcube
 
 create new DB iredadmin with the new user iredadmin:
 
-`> CREATE database iredadmin;`
+`> CREATE database iredadmin;
+> GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw’;`
 
 `> GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw’;`
 

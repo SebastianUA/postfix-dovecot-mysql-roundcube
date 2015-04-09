@@ -29,7 +29,7 @@ mv postfix-dovecot-mysql-roundcube/postfix/roundcubemail /var/www/
 mv postfix-dovecot-mysql-roundcube/postfix/iredadmin /var/www/
 
 #create DBs
-mysql -uroot -p
+mysql -uroot -p << EOF
 
 CREATE database iredadmin;
 GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw';
@@ -39,6 +39,8 @@ CREATE database vmail;
 GRANT ALL ON vmail.* TO vmail@localhost IDENTIFIED BY 'vmail_pw';
 GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'vmailadmin_pw';
 exit;
+EOF
+service mysqld restart
 
 #restore DBs
 mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin.sql

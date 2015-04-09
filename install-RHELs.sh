@@ -17,17 +17,17 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #moving to etc
-mv postfix-dovecot-mysql-roundcube/dovecot /etc/
-mv postfix-dovecot-mysql-roundcube/httpd /etc/
-mv postfix-dovecot-mysql-roundcube/postfix /etc/
-mv postfix-dovecot-mysql-roundcube/mysql/* /etc/
+mv /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot /etc/
+mv /usr/local/src/postfix-dovecot-mysql-roundcube/httpd /etc/
+mv /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
+mv /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #moving to /var/www/
 mv postfix-dovecot-mysql-roundcube/postfix/roundcubemail /var/www/
 mv postfix-dovecot-mysql-roundcube/postfix/iredadmin /var/www/
 
 
-#restore DBs
+#create DBs
 mysql -uroot -p
 
 CREATE database iredadmin;
@@ -39,6 +39,12 @@ GRANT ALL ON vmail.* TO vmail@localhost IDENTIFIED BY 'vmail_pw';
 GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'vmailadmin_pw';
 exit;
 
+#restore DBs
+mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin.sql
+mysql -uroot -p roundcube < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail.sql
+mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
+
+#create new admin user 
 
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube

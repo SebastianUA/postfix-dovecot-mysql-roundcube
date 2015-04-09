@@ -27,6 +27,7 @@ rm -rf /etc/postfix
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
 rm -rf /etc/my.cnf
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
+#moving certs to etc
 
 #moving to /var/www/
 mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/
@@ -52,7 +53,7 @@ mysql -uroot -p roundcube < /usr/local/src/postfix-dovecot-mysql-roundcube/Struc
 mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
 
 #create new admin user 
-
+create new user iredadmin!!!!
 
 #restart all services
 /etc/init.d/mysqld restart

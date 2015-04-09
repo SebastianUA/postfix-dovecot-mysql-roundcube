@@ -19,14 +19,14 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #moving to etc
-mv /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot /etc/
-mv /usr/local/src/postfix-dovecot-mysql-roundcube/httpd /etc/
-mv /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
-mv /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot /etc/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd /etc/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #moving to /var/www/
-mv postfix-dovecot-mysql-roundcube/postfix/roundcubemail /var/www/
-mv postfix-dovecot-mysql-roundcube/postfix/iredadmin /var/www/
+mv -f postfix-dovecot-mysql-roundcube/postfix/roundcubemail /var/www/
+mv -f postfix-dovecot-mysql-roundcube/postfix/iredadmin /var/www/
 
 #create DBs
 mysql -uroot -p << EOF

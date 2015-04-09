@@ -28,6 +28,7 @@ mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
 rm -rf /etc/my.cnf
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 #moving certs to etc
+#mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/cert/* /etc/
 
 #moving to /var/www/
 mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/
@@ -46,14 +47,16 @@ GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'vmailadmin_pw';
 exit;
 EOF
 
-
 #restore DBs
 mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin.sql
 mysql -uroot -p roundcube < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail.sql
 mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
 
+# create new user iredadmin for iredadmin
+useradd -M -N -r -s /sbin/nologin iredadmin
+
 #create new admin user 
-create new user iredadmin!!!!
+
 
 #restart all services
 /etc/init.d/mysqld restart
@@ -63,6 +66,6 @@ service dovecot restart
 
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
-echo "================================================";
-echo "DONE!";
-echo "================================================";
+echo "=====================================================";
+echo "========================DONE!========================";
+echo "=====================================================";

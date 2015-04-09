@@ -9,7 +9,7 @@ yum install mlocate bind-utils telnet mailx sharutils
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; fi
 if ! type -path "git" > /dev/null 2>&1; then yum install git -y; fi
-if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd -y; fi
+if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql mod_dnssd mod_ssl mod_wsgi -y; fi
 if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y; fi
 if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y; mysql_secure_installation; fi
 if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix -y; fi

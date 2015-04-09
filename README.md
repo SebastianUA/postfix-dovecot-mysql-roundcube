@@ -4,6 +4,8 @@ postfix + dovecot with mysql and roundcube
 
 ##INSTALL
 
+`# cd /usr/local/src/ && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git`
+
 # 1. create the DBs and the users.
 
 `# mysql -uroot -p`

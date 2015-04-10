@@ -13,7 +13,7 @@ if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql 
 if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y; fi
 if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y; mysql_secure_installation; fi
 if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix -y; fi
-if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql -y; fi
+if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql dovecot-pigeonhole -y; fi
 
 #download clone
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
@@ -54,8 +54,9 @@ mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Struc
 mysql -uroot -p roundcube < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail.sql
 mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
 
-# create new user iredadmin for iredadmin
-useradd -M -N -r -s /sbin/nologin iredadmin
+# create new users (iredadmin and vmail):
+useradd -M  -s /sbin/nologin -U iredadmin
+useradd -M  -s /sbin/nologin -U vmail
 
 #create new admin user 
 

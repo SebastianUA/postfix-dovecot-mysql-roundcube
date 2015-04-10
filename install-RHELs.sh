@@ -27,8 +27,10 @@ rm -rf /etc/postfix
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
 rm -rf /etc/my.cnf
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
+
 #moving certs to etc
-#mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/cert/* /etc/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/private* /etc/pki/tls/private/
 
 #moving to /var/www/
 mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/

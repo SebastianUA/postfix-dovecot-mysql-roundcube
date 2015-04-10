@@ -33,8 +33,15 @@ mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
 
 #move roundcubemail iredadmin and to /var/www/
-mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/
-mv -f postfix-dovecot-mysql-roundcube/iredadmin /var/www/
+mv -f postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
+mv -f postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
+
+#create links for  roundcubemail and iRedAdmin
+#ln -s {target-filename} {symbolic-filename}
+mkdir -p /var/www/roundcubemail
+ls -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
+mkdir -p /var/www/iredadmin
+ls -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 
 #create DBs 
 mysql -uroot -p << EOF

@@ -19,30 +19,24 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #move files to etc
-#rm -rf /etc/dovecot
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot /etc/
-#rm -rf /etc/httpd
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd /etc/
-#rm -rf /etc/postfix
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
-#rm -rf /etc/my.cnf
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix/* /etc/postfix/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #move certs to etc
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
 
 #move roundcubemail iredadmin and to /var/www/
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/icons /var/www/
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/icons /var/www/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
+cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
-# mkdir -p /var/www/roundcubemail
 ln -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
-#mkdir -p /var/www/iredadmin
 ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 
 #create DBs 

@@ -18,7 +18,7 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 #download clone
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
-#moving to etc
+#move files to etc
 rm -rf /etc/dovecot
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot /etc/
 rm -rf /etc/httpd
@@ -28,11 +28,11 @@ mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
 rm -rf /etc/my.cnf
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
-#moving certs to etc
+#move certs to etc
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
 
-#moving to /var/www/
+#move roundcubemail iredadmin and to /var/www/
 mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/
 mv -f postfix-dovecot-mysql-roundcube/iredadmin /var/www/
 
@@ -59,6 +59,10 @@ useradd -M -N -r -s /sbin/nologin iredadmin
 
 #create new admin user 
 
+
+#add logs
+mkdir -p /etc/httpd/logs
+touch /etc/httpd/logs/error_log
 
 #restart all services
 /etc/init.d/mysqld restart

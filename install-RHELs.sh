@@ -19,13 +19,13 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #move files to etc
-rm -rf /etc/dovecot
+#rm -rf /etc/dovecot
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot /etc/
-rm -rf /etc/httpd
+#rm -rf /etc/httpd
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd /etc/
-rm -rf /etc/postfix
+#rm -rf /etc/postfix
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix /etc/
-rm -rf /etc/my.cnf
+#rm -rf /etc/my.cnf
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #move certs to etc
@@ -70,9 +70,12 @@ useradd -M  -s /sbin/nologin -U vmail
 #create new admin user 
 
 
-#add logs
-mkdir -p /etc/httpd/logs
-touch /etc/httpd/logs/error_log
+#add logs and pid
+#mkdir -p /etc/httpd/logs
+#touch /etc/httpd/logs/error_log
+#mkdir -p /etc/httpd/run
+#touch /etc/httpd/run/httpd.pid
+
 
 #restart all services
 /etc/init.d/mysqld restart

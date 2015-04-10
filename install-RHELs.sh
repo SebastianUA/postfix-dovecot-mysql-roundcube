@@ -30,7 +30,7 @@ mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #moving certs to etc
 mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
-mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/private* /etc/pki/tls/private/
+mv -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
 
 #moving to /var/www/
 mv -f postfix-dovecot-mysql-roundcube/roundcubemail /var/www/

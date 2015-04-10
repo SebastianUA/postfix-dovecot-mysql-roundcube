@@ -40,10 +40,10 @@ chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
-mkdir -p /var/www/roundcubemail
-ls -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
-mkdir -p /var/www/iredadmin
-ls -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
+# mkdir -p /var/www/roundcubemail
+ln -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
+#mkdir -p /var/www/iredadmin
+ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 
 #create DBs 
 mysql -uroot -p << EOF

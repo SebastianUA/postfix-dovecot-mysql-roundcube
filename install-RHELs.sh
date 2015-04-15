@@ -85,6 +85,10 @@ EOF
 #mkdir -p /etc/httpd/run
 #touch /etc/httpd/run/httpd.pid
 
+#add all services to autostart
+chkconfig postfix on
+chkconfig dovecot on
+chkconfig httpd on
 
 #restart all services
 /etc/init.d/mysqld restart

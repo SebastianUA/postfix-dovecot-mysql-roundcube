@@ -89,6 +89,7 @@ EOF
 chkconfig postfix on
 chkconfig dovecot on
 chkconfig httpd on
+chkconfig mysqld on
 
 #restart all services
 /etc/init.d/mysqld restart

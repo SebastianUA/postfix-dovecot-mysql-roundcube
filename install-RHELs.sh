@@ -1,4 +1,6 @@
 #!/bin/sh
+#update OS
+yum update
 
 #delete sendmail:
 yum remove sendmail
@@ -19,19 +21,19 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #move files to etc
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix/* /etc/postfix/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix/* /etc/postfix/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #move certs to etc
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
 
 #move roundcubemail iredadmin and to /var/www/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/icons /var/www/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/icons /var/www/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
 
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
@@ -39,6 +41,7 @@ ln -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
 ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 
 #create DBs 
+service mysqld restart
 mysql -uroot -p << EOF
 
 CREATE database iredadmin;
@@ -57,14 +60,6 @@ mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Struc
 mysql -uroot -p roundcubemail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail.sql
 mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
 
-# create new users (iredadmin and vmail):
-useradd -M  -s /sbin/nologin -U iredadmin
-useradd -M  -s /sbin/nologin -U vmail
-useradd -M  -s /sbin/nologin -U roundcubemail
-chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
-chown -R roundcubemail:roundcubemail roundcubemail 
-chown -R roundcubemail:roundcubemail roundcubemail-1.0.4
-
 #create new users postmaster@test.com.local with the password and the second user test666@test.com.local and his pw is QWERTY####12|34
 mysql -uroot -p << EOF
 use vmail;
@@ -74,10 +69,19 @@ INSERT INTO `domain_admins` VALUES ('postmaster@test.com.local','ALL','2015-04-0
 INSERT INTO `mailbox` VALUES ('postmaster@test.com.local','{SSHA512}Tl1qk/rBv+0ei0StJY29VXYpDDURhEZg5I0Wl1PVnB8KYp0RAsYO+VrmehjvIGozNSyiVzOPKKk2KUs1RKcfJmnnbz7CLyZj','postmaster','en_US','/var/vmail','vmail1','test.com.local/p/o/s/postmaster-2015.04.08.13.26.39/',100,'test.com.local','','','normal','',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1,''),('test666@test.com.local','{SSHA512}ZqSF1lUd3G99EmaoDcQXcVEV16TwPUrK60BgrEIsJxfoi3c5v/TNeEyxlwsn3SX/ooxVXHE6XVOkj5WD5bzDhUcB3GgAAXs5','test666','en_US','/var/vmail','vmail1','test.com.local/t/e/s/test666-2015.04.08.14.08.42/',154,'test.com.local','','','normal','',0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1,'test666');
 INSERT INTO `used_quota` VALUES ('test666@test.com.local',1055,2,'test.com.local');
 use roundcubemail;
-INSERT INTO `identities` VALUES (1,1,'2015-04-08 14:00:29',0,1,'','','postmaster@test.com.local','','',NULL,0),(2,2,'2015-04-08 14:12:26',0,1,'','','test666@test.com.local','','',NULL,0);
 INSERT INTO `users` VALUES (1,'postmaster@test.com.local','127.0.0.1','2015-04-08 14:00:29','2015-04-08 14:00:29','en_US',NULL),(2,'test666@test.com.local','127.0.0.1','2015-04-08 14:12:26','2015-04-08 14:31:37','en_US',NULL);
+INSERT INTO `identities` VALUES (1,1,'2015-04-08 14:00:29',0,1,'','','postmaster@test.com.local','','',NULL,0),(2,2,'2015-04-08 14:12:26',0,1,'','','test666@test.com.local','','',NULL,0);
 exit;
 EOF
+
+# create new users (iredadmin and vmail):
+#need to create iredadmin with home's dir
+useradd -M  -s /sbin/nologin -U iredadmin
+useradd -M  -s /sbin/nologin -U vmail
+useradd -M  -s /sbin/nologin -U roundcubemail
+chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
+chown -R roundcubemail:roundcubemail roundcubemail 
+chown -R roundcubemail:roundcubemail roundcubemail-1.0.4
 
 #add logs and pid
 #mkdir -p /etc/httpd/logs

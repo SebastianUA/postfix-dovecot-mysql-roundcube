@@ -75,13 +75,13 @@ exit;
 EOF
 
 # create new users (iredadmin and vmail):
-#need to create iredadmin with home's dir
-useradd -M  -s /sbin/nologin -U iredadmin
+useradd  -s /sbin/nologin -U iredadmin
 useradd -M  -s /sbin/nologin -U vmail
 useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
-chown -R roundcubemail:roundcubemail roundcubemail 
-chown -R roundcubemail:roundcubemail roundcubemail-1.0.4
+chown -R roundcubemail:roundcubemail /var/www/roundcubemail 
+chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
+chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
 
 #add logs and pid
 #mkdir -p /etc/httpd/logs

@@ -37,8 +37,8 @@ cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-my
 
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
-ln -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
-ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
+ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
+ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 
 #create DBs 
 service mysqld restart
@@ -81,7 +81,11 @@ useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 chown -R roundcubemail:roundcubemail /var/www/roundcubemail 
 chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
-chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
+chmod 644 /etc/postfix/mysql/*
+#chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
+#chmod 644 /etc/postfix/mysql/relay_domains.cf
+#chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
+
 
 #add logs and pid
 #mkdir -p /etc/httpd/logs

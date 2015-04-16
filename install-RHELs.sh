@@ -86,12 +86,7 @@ chmod 644 /etc/postfix/mysql/*
 #chmod 644 /etc/postfix/mysql/relay_domains.cf
 #chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
 
-
-#add logs and pid
-#mkdir -p /etc/httpd/logs
-#touch /etc/httpd/logs/error_log
-#mkdir -p /etc/httpd/run
-#touch /etc/httpd/run/httpd.pid
+#Add rules to firewall
 
 #add all services to autostart
 chkconfig postfix on

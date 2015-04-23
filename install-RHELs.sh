@@ -47,7 +47,7 @@ mysql -uroot -p << EOF
 CREATE database iredadmin;
 GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw';
 CREATE database roundcubemail;
-GRANT ALL ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY 'roundcube_pw';
+GRANT ALL ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY '5CxgEu109zOEdRIHTbU6WkQvkxmRHm';
 CREATE database vmail;
 GRANT ALL ON vmail.* TO vmail@localhost IDENTIFIED BY 'BKG9DBgycYFbsXTH8oU9q7sLUHRCxM';
 GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'BGKeeM8sm3s0KuLg2MmFJxLxGydkhc';

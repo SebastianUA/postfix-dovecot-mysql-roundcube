@@ -1,4 +1,6 @@
 #!/bin/sh
+#update OS
+yum update
 
 #delete sendmail:
 yum remove sendmail
@@ -19,19 +21,19 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #move files to etc
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix/* /etc/postfix/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfix/* /etc/postfix/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/mysql/* /etc/
 
 #move certs to etc
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/certs/* /etc/pki/tls/certs/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/certs_and_keys/private/* /etc/pki/tls/private/
 
 #move roundcubemail iredadmin and to /var/www/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/icons /var/www/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
-cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/icons /var/www/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/roundcubemail-1.0.4 /var/www/
+/bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/iRedAdmin-0.4.1 /var/www/
 
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
@@ -39,15 +41,16 @@ ln -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
 ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 
 #create DBs 
+service mysqld restart
 mysql -uroot -p << EOF
 
 CREATE database iredadmin;
 GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw';
 CREATE database roundcubemail;
-GRANT ALL ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY 'roundcube_pw';
+GRANT ALL ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY '5CxgEu109zOEdRIHTbU6WkQvkxmRHm';
 CREATE database vmail;
-GRANT ALL ON vmail.* TO vmail@localhost IDENTIFIED BY 'vmail_pw';
-GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'vmailadmin_pw';
+GRANT ALL ON vmail.* TO vmail@localhost IDENTIFIED BY 'BKG9DBgycYFbsXTH8oU9q7sLUHRCxM';
+GRANT ALL ON vmail.* TO vmailadmin@localhost IDENTIFIED BY 'BGKeeM8sm3s0KuLg2MmFJxLxGydkhc';
 flush privileges;
 exit;
 EOF
@@ -57,34 +60,39 @@ mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Struc
 mysql -uroot -p roundcubemail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail.sql
 mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail.sql
 
-# create new users (iredadmin and vmail):
-useradd -M  -s /sbin/nologin -U iredadmin
-useradd -M  -s /sbin/nologin -U vmail
-useradd -M  -s /sbin/nologin -U roundcubemail
-chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
-chown -R roundcubemail:roundcubemail roundcubemail 
-chown -R roundcubemail:roundcubemail roundcubemail-1.0.4
-
-#create new users postmaster@test.com.local with the password and the second user test666@test.com.local and his pw is QWERTY####12|34
+#create new users postmaster@test.com.local with the password QWERTY##12|34 and the second user test666@test.com.local and his pw is QWERTY####12|34
 mysql -uroot -p << EOF
 use vmail;
 INSERT INTO `alias` VALUES ('postmaster@test.com.local','postmaster@test.com.local','',NULL,'','test.com.local',0,'2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test666@test.com.local','test666@test.com.local','',NULL,'','test.com.local',0,'2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 INSERT INTO `domain` VALUES ('test.com.local',NULL,NULL,0,0,0,0,'dovecot',0,'default_user_quota:1024;','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 INSERT INTO `domain_admins` VALUES ('postmaster@test.com.local','ALL','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
-INSERT INTO `mailbox` VALUES ('postmaster@test.com.local','{SSHA512}Tl1qk/rBv+0ei0StJY29VXYpDDURhEZg5I0Wl1PVnB8KYp0RAsYO+VrmehjvIGozNSyiVzOPKKk2KUs1RKcfJmnnbz7CLyZj','postmaster','en_US','/var/vmail','vmail1','test.com.local/p/o/s/postmaster-2015.04.08.13.26.39/',100,'test.com.local','','','normal','',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1,''),('test666@test.com.local','{SSHA512}ZqSF1lUd3G99EmaoDcQXcVEV16TwPUrK60BgrEIsJxfoi3c5v/TNeEyxlwsn3SX/ooxVXHE6XVOkj5WD5bzDhUcB3GgAAXs5','test666','en_US','/var/vmail','vmail1','test.com.local/t/e/s/test666-2015.04.08.14.08.42/',154,'test.com.local','','','normal','',0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1,'test666');
+INSERT INTO `mailbox` VALUES ('postmaster@test.com.local','{SSHA512}b3931f1983861e56a56c114e8eb2f20ab9a3bb4edd0b9728b0b49aa8dd4891b7bed9a8075da022e0d3ee5d67073db1a1b9ab167a87f0e04ec86d63ecc4f94d0f','postmaster','en_US','/var/vmail','vmail1','test.com.local/p/o/s/postmaster-2015.04.08.13.26.39/',100,'test.com.local','','','normal','',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1,''),('test666@test.com.local','{SSHA512}b3931f1983861e56a56c114e8eb2f20ab9a3bb4edd0b9728b0b49aa8dd4891b7bed9a8075da022e0d3ee5d67073db1a1b9ab167a87f0e04ec86d63ecc4f94d0f','test666','en_US','/var/vmail','vmail1','test.com.local/t/e/s/test666-2015.04.08.14.08.42/',154,'test.com.local','','','normal','',0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1,'test666');
 INSERT INTO `used_quota` VALUES ('test666@test.com.local',1055,2,'test.com.local');
 use roundcubemail;
-INSERT INTO `identities` VALUES (1,1,'2015-04-08 14:00:29',0,1,'','','postmaster@test.com.local','','',NULL,0),(2,2,'2015-04-08 14:12:26',0,1,'','','test666@test.com.local','','',NULL,0);
 INSERT INTO `users` VALUES (1,'postmaster@test.com.local','127.0.0.1','2015-04-08 14:00:29','2015-04-08 14:00:29','en_US',NULL),(2,'test666@test.com.local','127.0.0.1','2015-04-08 14:12:26','2015-04-08 14:31:37','en_US',NULL);
+INSERT INTO `identities` VALUES (1,1,'2015-04-08 14:00:29',0,1,'','','postmaster@test.com.local','','',NULL,0),(2,2,'2015-04-08 14:12:26',0,1,'','','test666@test.com.local','','',NULL,0);
 exit;
 EOF
 
-#add logs and pid
-#mkdir -p /etc/httpd/logs
-#touch /etc/httpd/logs/error_log
-#mkdir -p /etc/httpd/run
-#touch /etc/httpd/run/httpd.pid
+# create new users (iredadmin and vmail):
+useradd  -s /sbin/nologin -U iredadmin
+useradd -M  -s /sbin/nologin -U vmail
+useradd -M  -s /sbin/nologin -U roundcubemail
+chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
+chown -R roundcubemail:roundcubemail /var/www/roundcubemail 
+chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
+chmod 644 /etc/postfix/mysql/*
+#chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
+#chmod 644 /etc/postfix/mysql/relay_domains.cf
+#chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
 
+#Add rules to firewall
+
+#add all services to autostart
+chkconfig postfix on
+chkconfig dovecot on
+chkconfig httpd on
+chkconfig mysqld on
 
 #restart all services
 /etc/init.d/mysqld restart
@@ -92,6 +100,26 @@ service httpd restart
 service postfix restart
 service dovecot restart
 
+#chmod all folders and the files
+find /var/www/ -type f -exec chmod 644 {} \;
+find /var/www/ -type d -exec chmod 755 {} \;
+
+# chown + chmod
+#
+# Dovecot
+chmod +r /etc/dovecot/dovecot-master-users
+chown -R dovecot:dovecot /etc/dovecot/dovecot-master-users
+chown -R dovecot:dovecot /etc/dovecot/dovecot-share-folder.conf
+chown -R dovecot:dovecot /etc/dovecot/dovecot-used-quota.conf
+#
+# Postfix
+chown -R .postfix /etc/postfix/mysql/*
+
+# vmail
+chown -R vmail:vmail /var/log/dovecot.log
+touch /var/log/dovecot-lmtp.log
+chown -R vmail:vmail /var/log/dovecot-lmtp.log
+#
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
 echo "=====================================================";

@@ -105,11 +105,21 @@ find /var/www/ -type f -exec chmod 644 {} \;
 find /var/www/ -type d -exec chmod 755 {} \;
 
 # chown + chmod
+#
+# Dovecot
 chmod +r /etc/dovecot/dovecot-master-users
+chown -R dovecot:dovecot /etc/dovecot/dovecot-master-users
+chown -R dovecot:dovecot /etc/dovecot/dovecot-share-folder.conf
+chown -R dovecot:dovecot /etc/dovecot/dovecot-used-quota.conf
+#
+# Postfix
+chown -R .postfix /etc/postfix/mysql/*
+
+# vmail
 chown -R vmail:vmail /var/log/dovecot.log
 touch /var/log/dovecot-lmtp.log
 chown -R vmail:vmail /var/log/dovecot-lmtp.log
-
+#
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
 echo "=====================================================";

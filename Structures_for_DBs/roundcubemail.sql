@@ -203,13 +203,13 @@ CREATE TABLE `identities` (
   `email` varchar(128) NOT NULL,
   `reply-to` varchar(128) NOT NULL DEFAULT '',
   `bcc` varchar(128) NOT NULL DEFAULT '',
-  `signature` text,
+  `signature` longtext,
   `html_signature` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`identity_id`),
   KEY `user_identities_index` (`user_id`,`del`),
   KEY `email_identities_index` (`email`,`del`),
   CONSTRAINT `user_id_fk_identities` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -280,7 +280,7 @@ CREATE TABLE `users` (
   `preferences` longtext,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`,`mail_host`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -292,4 +292,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-08 17:05:43
+-- Dump completed on 2015-05-22 15:26:45

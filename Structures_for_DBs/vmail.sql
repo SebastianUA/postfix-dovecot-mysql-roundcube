@@ -213,6 +213,7 @@ CREATE TABLE `mailbox` (
   `enableindexer-worker` tinyint(1) NOT NULL DEFAULT '1',
   `enablelmtp` tinyint(1) NOT NULL DEFAULT '1',
   `enabledsync` tinyint(1) NOT NULL DEFAULT '1',
+  `allow_nets` text,
   `lastlogindate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `lastloginipv4` int(4) unsigned NOT NULL DEFAULT '0',
   `lastloginprotocol` char(255) NOT NULL DEFAULT '',
@@ -406,4 +407,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-08 17:06:06
+-- Dump completed on 2015-05-22 15:27:23

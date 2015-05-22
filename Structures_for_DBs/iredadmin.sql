@@ -51,7 +51,7 @@ CREATE TABLE `log` (
   `ip` varchar(40) NOT NULL,
   `domain` varchar(255) NOT NULL DEFAULT '',
   `username` varchar(255) NOT NULL DEFAULT '',
-  `event` varchar(10) NOT NULL DEFAULT '',
+  `event` varchar(20) NOT NULL DEFAULT '',
   `loglevel` varchar(10) NOT NULL DEFAULT 'info',
   `msg` varchar(255) NOT NULL,
   KEY `id` (`id`),
@@ -62,7 +62,7 @@ CREATE TABLE `log` (
   KEY `username` (`username`),
   KEY `event` (`event`),
   KEY `loglevel` (`loglevel`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,4 +104,4 @@ CREATE TABLE `updatelog` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-08 17:05:11
+-- Dump completed on 2015-05-22 15:25:30

@@ -18,7 +18,9 @@ Debian/ubuntu/Mint:
 ## Test accounts 
 
 I created the following test accounts:
+
 1. For domain localhost.test.local
+
 Username_1: postmaster@localhost.test.local
 Username_2: test_user@localhost.test.local
 Password:   QWERTY####12|34

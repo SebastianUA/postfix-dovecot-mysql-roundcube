@@ -104,6 +104,12 @@ service dovecot restart
 find /var/www/ -type f -exec chmod 644 {} \;
 find /var/www/ -type d -exec chmod 755 {} \;
 
+# chown + chmod
+chmod +r /etc/dovecot/dovecot-master-users
+chown -R vmail:vmail /var/log/dovecot.log
+touch /var/log/dovecot-lmtp.log
+chown -R vmail:vmail /var/log/dovecot-lmtp.log
+
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
 echo "=====================================================";

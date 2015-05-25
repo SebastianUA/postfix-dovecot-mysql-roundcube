@@ -60,7 +60,7 @@ CREATE TABLE `log` (
   `ip` varchar(40) NOT NULL,
   `domain` varchar(255) NOT NULL DEFAULT '',
   `username` varchar(255) NOT NULL DEFAULT '',
-  `event` varchar(10) NOT NULL DEFAULT '',
+  `event` varchar(20) NOT NULL DEFAULT '',
   `loglevel` varchar(10) NOT NULL DEFAULT 'info',
   `msg` varchar(255) NOT NULL,
   KEY `id` (`id`),
@@ -71,7 +71,7 @@ CREATE TABLE `log` (
   KEY `username` (`username`),
   KEY `event` (`event`),
   KEY `loglevel` (`loglevel`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +80,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (1,'2015-04-08 08:06:36','postmaster@test.com.local','127.0.0.1','','','login','info','Login success'),(2,'2015-04-08 08:06:56','postmaster@test.com.local','127.0.0.1','','','active','info','Active domain: test.com.local.'),(3,'2015-04-08 08:08:42','postmaster@test.com.local','127.0.0.1','test.com.local','','create','info','Create user: test666@test.com.local.');
+INSERT INTO `log` VALUES (1,'2015-05-22 08:21:04','postmaster@localhost.test.local','127.0.0.1','','','login','info','Login success'),(2,'2015-05-22 08:30:34','postmaster@localhost.test.local','127.0.0.1','','','create','info','Create admin: test_user@localhost.test.local.'),(3,'2015-05-22 08:32:57','postmaster@localhost.test.local','127.0.0.1','test.com.local','','create','info','Create domain: test.com.local.'),(4,'2015-05-22 08:33:49','postmaster@localhost.test.local','127.0.0.1','','','create','info','Create admin: test@test.com.local.'),(5,'2015-05-22 09:01:44','postmaster@localhost.test.local','127.0.0.1','localhost.test.local','','create','info','Create user: test_user@localhost.test.local.'),(6,'2015-05-22 09:02:33','postmaster@localhost.test.local','127.0.0.1','test.com.local','','create','info','Create user: test@test.com.local.');
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -105,7 +105,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('e1d401d77c6891d4845feaca507de27eae386e5a','2015-04-08 11:11:34','KGRwMQpTJ3VzZXJuYW1lJwpwMgpTJ3Bvc3RtYXN0ZXJAdGVzdC5jb20ubG9jYWwnCnAzCnNTJ2Vu\nYWJsZV9wb2xpY3lkJwpwNApJMDAKc1Mnc3RvcmVfcGFzc3dvcmRfaW5fcGxhaW5fdGV4dCcKcDUK\nSTAwCnNTJ2xhbmcnCnA2ClMnZW5fVVMnCnA3CnNTJ2RvbWFpbkdsb2JhbEFkbWluJwpwOApJMDEK\nc1MnaXAnCnA5ClYxMjcuMC4wLjEKcDEwCnNTJ2xvZ2dlZCcKcDExCkkwMQpzUydjc3JmX3Rva2Vu\nJwpwMTIKUyd6RzN5akVtRmhEeVR4NWpLNVVEYmQ4VzNTV1QzNGp3NicKcDEzCnNTJ3Nlc3Npb25f\naWQnCnAxNApTJ2UxZDQwMWQ3N2M2ODkxZDQ4NDVmZWFjYTUwN2RlMjdlYWUzODZlNWEnCnAxNQpz\nUydhbWF2aXNkX2VuYWJsZV9xdWFyYW50aW5lJwpwMTYKSTAxCnNTJ2RlZmF1bHRfbXRhX3RyYW5z\ncG9ydCcKcDE3ClMnZG92ZWNvdCcKcDE4CnNTJ2VuYWJsZV9jbHVlYnJpbmdlcicKcDE5CkkwMQpz\nUydmYWlsZWRfdGltZXMnCnAyMApJMApzUydpc19nbG9iYWxfYWRtaW4nCnAyMQpJMDAKc1Mnd2Vi\nbWFzdGVyJwpwMjIKUydwb3N0bWFzdGVyQHRlc3QuY29tLmxvY2FsJwpwMjMKc1MnaXNNYWlsVXNl\ncicKcDI0CkkwMQpzLg==\n');
+INSERT INTO `sessions` VALUES ('be5d610a115d23addcaa5bf0c48f4bc80222ef4b','2015-05-22 12:02:33','KGRwMQpTJ3VzZXJuYW1lJwpwMgpTJ3Bvc3RtYXN0ZXJAbG9jYWxob3N0LnRlc3QubG9jYWwnCnAz\nCnNTJ2VuYWJsZV9wb2xpY3lkJwpwNApJMDAKc1Mnc3RvcmVfcGFzc3dvcmRfaW5fcGxhaW5fdGV4\ndCcKcDUKSTAwCnNTJ2xhbmcnCnA2ClMnZW5fVVMnCnA3CnNTJ2RvbWFpbkdsb2JhbEFkbWluJwpw\nOApJMDEKc1MnaXAnCnA5ClYxMjcuMC4wLjEKcDEwCnNTJ2xvZ2dlZCcKcDExCkkwMQpzUydjc3Jm\nX3Rva2VuJwpwMTIKUyc0SjhBOVVOMjNaN20yMzYzNVNlSzdwbTU3NW45MmdXSCcKcDEzCnNTJ3Nl\nc3Npb25faWQnCnAxNApTJ2JlNWQ2MTBhMTE1ZDIzYWRkY2FhNWJmMGM0OGY0YmM4MDIyMmVmNGIn\nCnAxNQpzUydhbWF2aXNkX2VuYWJsZV9xdWFyYW50aW5lJwpwMTYKSTAxCnNTJ2RlZmF1bHRfbXRh\nX3RyYW5zcG9ydCcKcDE3ClMnZG92ZWNvdCcKcDE4CnNTJ2VuYWJsZV9jbHVlYnJpbmdlcicKcDE5\nCkkwMQpzUydmYWlsZWRfdGltZXMnCnAyMApJMApzUydpc19nbG9iYWxfYWRtaW4nCnAyMQpJMDAK\nc1Mnd2VibWFzdGVyJwpwMjIKUydwb3N0bWFzdGVyQGxvY2FsaG9zdC50ZXN0LmxvY2FsJwpwMjMK\nc1MnaXNNYWlsVXNlcicKcDI0CkkwMQpzLg==\n'),('618799b3570015f573e04202ed10828d98a075a7','2015-05-22 15:23:15','KGRwMQpTJ3VzZXJuYW1lJwpwMgpOc1MnZW5hYmxlX3BvbGljeWQnCnAzCkkwMApzUydzdG9yZV9w\nYXNzd29yZF9pbl9wbGFpbl90ZXh0JwpwNApJMDAKc1MnbGFuZycKcDUKUydlbl9VUycKcDYKc1Mn\naXAnCnA3ClYxOTIuMTY4LjEwMy4xMzAKcDgKc1MnbG9nZ2VkJwpwOQpJMDAKc1MnYW1hdmlzZF9l\nbmFibGVfcXVhcmFudGluZScKcDEwCkkwMQpzUydzZXNzaW9uX2lkJwpwMTEKUyc2MTg3OTliMzU3\nMDAxNWY1NzNlMDQyMDJlZDEwODI4ZDk4YTA3NWE3JwpwMTIKc1MnZGVmYXVsdF9tdGFfdHJhbnNw\nb3J0JwpwMTMKUydkb3ZlY290JwpwMTQKc1MnZmFpbGVkX3RpbWVzJwpwMTUKSTAKc1MnaXNfZ2xv\nYmFsX2FkbWluJwpwMTYKSTAwCnNTJ3dlYm1hc3RlcicKcDE3ClMncG9zdG1hc3RlckBsb2NhbGhv\nc3QudGVzdC5sb2NhbCcKcDE4CnNTJ2VuYWJsZV9jbHVlYnJpbmdlcicKcDE5CkkwMQpzLg==\n');
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +130,7 @@ CREATE TABLE `updatelog` (
 
 LOCK TABLES `updatelog` WRITE;
 /*!40000 ALTER TABLE `updatelog` DISABLE KEYS */;
-INSERT INTO `updatelog` VALUES (1,'2015-04-08');
+INSERT INTO `updatelog` VALUES (1,'2015-05-22');
 /*!40000 ALTER TABLE `updatelog` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -143,4 +143,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-08 17:17:38
+-- Dump completed on 2015-05-25 15:24:52

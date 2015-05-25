@@ -129,9 +129,14 @@ chown -R .postfix /etc/postfix/mysql/*
 chown -R vmail:vmail /var/log/dovecot.log
 touch /var/log/dovecot-lmtp.log
 chown -R vmail:vmail /var/log/dovecot-lmtp.log
-mkdir /var/vmail
-chown -R vmail:vmail /var/vmail
-chmod 700 /var/vmail
+mkdir -p /var/vmail/vmail1/test.com.local/t/e/s/test-2015.05.22.15.02.33/
+chown -R vmail:vmail /var/vmail/
+chmod -R 777 /var/vmail/
+
+# send test email
+#ps ax | mail -s test test_user@localhost.test.local
+#ps ax | mail -s test postmaster@localhost.test.local
+#ps ax | mail -s test test@test.com.local
 
 #
 #remove trash

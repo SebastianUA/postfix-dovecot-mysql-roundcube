@@ -22,7 +22,7 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 yum update postfix dovecot
 
 #download clone
-cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
+#cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
 
 #move files to etc
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/

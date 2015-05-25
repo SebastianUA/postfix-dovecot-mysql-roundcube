@@ -87,13 +87,12 @@ EOF
 
 # create new users (iredadmin and vmail):
 useradd  -s /sbin/nologin -U iredadmin
-useradd -M  -s /sbin/nologin -U vmail
+useradd -M  -s /sbin/nologin -U vmail # need add UID -> 2000:2000
 useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 chown -R iredadmin:iredadmin /var/www/html/iredadmin
 chown -R roundcubemail:roundcubemail /var/www/html/roundcubemail 
 chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
-#chmod 644 /etc/postfix/mysql/*
 chmod 640 /etc/postfix/mysql/*
 
 #Add rules to firewall
@@ -129,9 +128,9 @@ chown -R .postfix /etc/postfix/mysql/*
 chown -R vmail:vmail /var/log/dovecot.log
 touch /var/log/dovecot-lmtp.log
 chown -R vmail:vmail /var/log/dovecot-lmtp.log
-mkdir -p /var/vmail/vmail1/test.com.local/t/e/s/test-2015.05.22.15.02.33/
+mkdir -p /var/vmail/
 chown -R vmail:vmail /var/vmail/
-chmod -R 777 /var/vmail/
+chmod -R 700 /var/vmail/
 
 # send test email
 #ps ax | mail -s test test_user@localhost.test.local

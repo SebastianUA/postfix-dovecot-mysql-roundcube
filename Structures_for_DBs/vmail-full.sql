@@ -46,6 +46,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES ('test_user@localhost.test.local','{SSHA512}yasTZjEWDzdOe275GyhhewI8MWuoZF9JeeRiJdjQIKgt8O4YHdtQMhBnvJqw6aRvMqagZ0+NuCjhuTsWStz14F2sAj4SeiAg','test_user@localhost.test.local','en_US','0000-00-00 00:00:00',NULL,'2015-05-22 11:30:34','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test@test.com.local','{SSHA512}kUg7l1jUcHnZhpcasgOKEUUP4W7pjb0khY2dMfe3McYJtpnyvoMdX/hWC9neRN5jnq+xP5BliWIuhWjcvk2hHPEFK5KctbEp','test@test.com.local','en_US','0000-00-00 00:00:00',NULL,'2015-05-22 11:33:49','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +83,7 @@ CREATE TABLE `alias` (
 
 LOCK TABLES `alias` WRITE;
 /*!40000 ALTER TABLE `alias` DISABLE KEYS */;
-INSERT INTO `alias` VALUES ('postmaster@test.com.local','postmaster@test.com.local','',NULL,'','test.com.local',0,'2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test666@test.com.local','test666@test.com.local','',NULL,'','test.com.local',0,'2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
+INSERT INTO `alias` VALUES ('postmaster@localhost.test.local','postmaster@localhost.test.local','',NULL,'','localhost.test.local',0,'2015-05-22 14:09:14','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test_user@localhost.test.local','test_user@localhost.test.local','',NULL,'','localhost.test.local',0,'2015-05-22 12:01:44','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test@test.com.local','test@test.com.local','',NULL,'','test.com.local',0,'2015-05-22 12:02:33','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 /*!40000 ALTER TABLE `alias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +204,7 @@ CREATE TABLE `domain` (
 
 LOCK TABLES `domain` WRITE;
 /*!40000 ALTER TABLE `domain` DISABLE KEYS */;
-INSERT INTO `domain` VALUES ('test.com.local',NULL,NULL,0,0,0,0,'dovecot',0,'default_user_quota:1024;','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
+INSERT INTO `domain` VALUES ('localhost.test.local',NULL,NULL,0,0,0,0,'dovecot',0,'default_user_quota:1024;','2015-05-22 14:09:14','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test.com.local','test.com.local',NULL,0,0,0,0,'dovecot',0,NULL,'2015-05-22 11:32:57','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 /*!40000 ALTER TABLE `domain` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +235,7 @@ CREATE TABLE `domain_admins` (
 
 LOCK TABLES `domain_admins` WRITE;
 /*!40000 ALTER TABLE `domain_admins` DISABLE KEYS */;
-INSERT INTO `domain_admins` VALUES ('postmaster@test.com.local','ALL','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
+INSERT INTO `domain_admins` VALUES ('postmaster@localhost.test.local','ALL','2015-05-22 14:09:14','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test_user@localhost.test.local','ALL','2015-05-22 11:30:34','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test@test.com.local','ALL','2015-05-22 11:33:49','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 /*!40000 ALTER TABLE `domain_admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,6 +280,7 @@ CREATE TABLE `mailbox` (
   `enableindexer-worker` tinyint(1) NOT NULL DEFAULT '1',
   `enablelmtp` tinyint(1) NOT NULL DEFAULT '1',
   `enabledsync` tinyint(1) NOT NULL DEFAULT '1',
+  `allow_nets` text,
   `lastlogindate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `lastloginipv4` int(4) unsigned NOT NULL DEFAULT '0',
   `lastloginprotocol` char(255) NOT NULL DEFAULT '',
@@ -330,7 +332,7 @@ CREATE TABLE `mailbox` (
 
 LOCK TABLES `mailbox` WRITE;
 /*!40000 ALTER TABLE `mailbox` DISABLE KEYS */;
-INSERT INTO `mailbox` VALUES ('postmaster@test.com.local','{SSHA512}Tl1qk/rBv+0ei0StJY29VXYpDDURhEZg5I0Wl1PVnB8KYp0RAsYO+VrmehjvIGozNSyiVzOPKKk2KUs1RKcfJmnnbz7CLyZj','postmaster','en_US','/var/vmail','vmail1','test.com.local/p/o/s/postmaster-2015.04.08.13.26.39/',100,'test.com.local','','','normal','',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1,''),('test666@test.com.local','{SSHA512}ZqSF1lUd3G99EmaoDcQXcVEV16TwPUrK60BgrEIsJxfoi3c5v/TNeEyxlwsn3SX/ooxVXHE6XVOkj5WD5bzDhUcB3GgAAXs5','test666','en_US','/var/vmail','vmail1','test.com.local/t/e/s/test666-2015.04.08.14.08.42/',154,'test.com.local','','','normal','',0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1,'test666');
+INSERT INTO `mailbox` VALUES ('postmaster@localhost.test.local','{SSHA512}9I1GJHxPysPCAFPeD3DCST0gx+mrTx9tsJWdPxQj9xdRd8aPKpx/Nop1D1z2L4IWk8b7WNbeUxSSmFHcnOiWGUoSBTCFLZFO','postmaster','en_US','/var/vmail','vmail1','localhost.test.local/p/o/s/postmaster-2015.05.22.14.03.15/',1024,'localhost.test.local','','','normal','',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,NULL,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-05-22 14:09:14','0000-00-00 00:00:00','9999-12-31 00:00:00',1,''),('test_user@localhost.test.local','{SSHA512}pY4rZOmoE2l9MSK3ozjxMTjWg4j1Tge93YNiEHzEy6jcvAltK92h8aEqHiJjT4RFOpWl/wQkec9G/DUndY6Wvs8e6EMFD+Uh','test_user','en_US','/var/vmail','vmail1','localhost.test.local/t/e/s/test_user-2015.05.22.15.01.44/',250,'localhost.test.local','','','normal','',0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,NULL,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-05-22 12:01:44','0000-00-00 00:00:00','9999-12-31 00:00:00',1,'test_user'),('test@test.com.local','{SSHA512}vCQ907vMQLwpaqOxUNo2WfcUM4TRT7U1Phk4UHHMwWtwgAcv9IV/p26qLzZRuql0xoXokIjM7LUgSCS8zUJgRdr0vD/3xrmi','test','en_US','/var/vmail','vmail1','test.com.local/t/e/s/test-2015.05.22.15.02.33/',250,'test.com.local','','','normal','',0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,NULL,'0000-00-00 00:00:00',0,'',NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-05-22 12:02:33','0000-00-00 00:00:00','9999-12-31 00:00:00',1,'test');
 /*!40000 ALTER TABLE `mailbox` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -506,7 +508,7 @@ CREATE TABLE `used_quota` (
 
 LOCK TABLES `used_quota` WRITE;
 /*!40000 ALTER TABLE `used_quota` DISABLE KEYS */;
-INSERT INTO `used_quota` VALUES ('test666@test.com.local',1055,2,'test.com.local');
+INSERT INTO `used_quota` VALUES ('postmaster@localhost.test.local',10878,3,'localhost.test.local'),('test@test.com.local',0,0,'test.com.local');
 /*!40000 ALTER TABLE `used_quota` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -537,4 +539,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-08 17:17:14
+-- Dump completed on 2015-05-25 15:21:37

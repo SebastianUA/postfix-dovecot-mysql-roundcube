@@ -129,6 +129,10 @@ chown -R .postfix /etc/postfix/mysql/*
 chown -R vmail:vmail /var/log/dovecot.log
 touch /var/log/dovecot-lmtp.log
 chown -R vmail:vmail /var/log/dovecot-lmtp.log
+mkdir /var/vmail
+chown -R vmail:vmail /var/vmail
+chmod 700 /var/vmail
+
 #
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube

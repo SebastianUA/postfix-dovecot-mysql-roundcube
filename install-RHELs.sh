@@ -40,8 +40,8 @@ cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-my
 
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
-ln -s /var/www/roundcubemail-1.0.4 /var/www/roundcubemail
-ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
+ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
+ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 
 #create DBs 
 service mysqld restart

@@ -9,7 +9,7 @@ yum remove sendmail
 yum install mlocate bind-utils telnet mailx sharutils 
 
 #install uwsgi
-yum install python python-devel python-pip uwsgi uwsgi-plugin-python
+yum install python python-devel python-pip uwsgi uwsgi-plugin-python libevent Django mod_python
 pip install virtualenv uwsgi
 
 #install if ! type -path:

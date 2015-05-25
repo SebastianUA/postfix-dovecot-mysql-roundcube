@@ -21,9 +21,6 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 #update
 yum update postfix dovecot
 
-#download clone
-#cd /usr/local/src && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git
-
 #move files to etc
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
@@ -91,10 +88,8 @@ chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 chown -R iredadmin:iredadmin /var/www/html/iredadmin
 chown -R roundcubemail:roundcubemail /var/www/html/roundcubemail 
 chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
-chmod 644 /etc/postfix/mysql/*
-#chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
-#chmod 644 /etc/postfix/mysql/relay_domains.cf
-#chmod 644 /etc/postfix/mysql/virtual_alias_maps.cf
+#chmod 644 /etc/postfix/mysql/*
+chmod 640 /etc/postfix/mysql/*
 
 #Add rules to firewall
 

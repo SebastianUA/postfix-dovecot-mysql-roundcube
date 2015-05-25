@@ -14,6 +14,15 @@ Debian/ubuntu/Mint:
 
 `# cd /usr/local/src/ && git clone https://github.com/SebastianUA/postfix-dovecot-mysql-roundcube.git`
 
+##Start script.
+Debian's:
+
+$ bash /usr/local/src/install-Debians.sh IN PROCESS!
+
+RedHad's:
+
+$ bash /usr/local/src/install-RHELs.sh IN TESTING! 
+
 
 ## Test accounts 
 

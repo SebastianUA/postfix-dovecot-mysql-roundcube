@@ -44,7 +44,6 @@ ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 #create DBs 
 service mysqld restart
 mysql -uroot -p << EOF
-
 CREATE database iredadmin;
 GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw';
 CREATE database roundcubemail;
@@ -79,6 +78,12 @@ mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structure
 #INSERT INTO `identities` VALUES (1,1,'2015-04-08 14:00:29',0,1,'','','postmaster@test.com.local','','',NULL,0),(2,2,'2015-04-08 14:12:26',0,1,'','','test666@test.com.local','','',NULL,0);
 #exit;
 #EOF
+
+#flush privileges
+mysql -uroot -p << EOF
+flush privileges;
+exit;
+EOF
 
 # create new users (iredadmin and vmail):
 useradd  -s /sbin/nologin -U iredadmin

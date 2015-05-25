@@ -17,11 +17,11 @@ Debian/ubuntu/Mint:
 ##Start script.
 Debian's:
 
-`$ bash /usr/local/src/install-Debians.sh` IN PROCESS!
+`$ bash /usr/local/src/postfix-dovecot-mysql-roundcube/install-Debians.sh` IN PROCESS! 
 
 RedHad's:
 
-`$ bash /usr/local/src/install-RHELs.sh` IN TESTING!
+`$ bash /usr/local/src/postfix-dovecot-mysql-roundcube/install-RHELs.sh` IN TESTING!
 
 
 ## Test accounts 

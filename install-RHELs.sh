@@ -9,8 +9,7 @@ yum remove sendmail
 yum install mlocate bind-utils telnet mailx sharutils 
 
 #install uwsgi
-yum install python python-devel python-pip uwsgi uwsgi-plugin-python libevent Django mod_python
-pip install virtualenv uwsgi
+yum install python-devel mysql-devel gcc python-setuptools python 
 
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; fi
@@ -49,7 +48,7 @@ ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 service mysqld restart
 mysql -uroot -p << EOF
 CREATE database iredadmin;
-GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'iredadmin_pw';
+GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'Zv5EzKG3VXkwH2ASWh3JyKGJJuB2M6';
 CREATE database roundcubemail;
 GRANT ALL ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY '5CxgEu109zOEdRIHTbU6WkQvkxmRHm';
 CREATE database vmail;
@@ -91,7 +90,7 @@ EOF
 
 # create new users (iredadmin and vmail):
 useradd  -s /sbin/nologin -U iredadmin
-useradd -M  -s /sbin/nologin -U vmail # need add UID -> 2000:2000
+useradd -M  -s /sbin/nologin -U vmail -u 2000 -g 2000 # need add UID -> 2000:2000
 useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 chown -R iredadmin:iredadmin /var/www/html/iredadmin

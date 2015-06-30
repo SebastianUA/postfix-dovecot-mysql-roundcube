@@ -9,7 +9,9 @@ yum remove sendmail
 yum install mlocate bind-utils telnet mailx sharutils 
 
 #install uwsgi
-yum install python-devel mysql-devel gcc python-setuptools python 
+yum install python-devel gcc python-setuptools python python-pip mod_wsgi
+pip install virtualenv
+
 
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; fi

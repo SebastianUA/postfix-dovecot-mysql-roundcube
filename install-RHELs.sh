@@ -9,23 +9,24 @@ yum remove sendmail
 yum install mlocate bind-utils telnet mailx sharutils 
 
 #install uwsgi
-yum install python-devel gcc python-setuptools python python-pip mod_wsgi
-pip install virtualenv
+ #yum install python-devel gcc python-setuptools python python-pip mod_wsgi
+ #pip install virtualenv
 
 
 #install if ! type -path:
-if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; fi
-if ! type -path "git" > /dev/null 2>&1; then yum install git -y; fi
-if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql mod_dnssd mod_ssl mod_wsgi -y; fi
-if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y; fi
-if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y; fi
+if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; else echo "wget INSTALLED"; fi
+if ! type -path "git" > /dev/null 2>&1; then yum install git -y;  else echo "git INSTALLED"; fi
+if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql mod_dnssd mod_ssl mod_wsgi -y;  else echo "HTTPD INSTALLED"; fi
+if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y;  else echo "PHP INSTALLED"; fi
+if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y;   else echo "MYSQL INSTALLED";fi
 #  service mysql restart; mysql_secure_installation;
-if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix cronie -y; fi
-if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql dovecot-pigeonhole -y; fi
+if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix cronie -y;  else echo "postfix INSTALLED"; fi
+if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql dovecot-pigeonhole -y;  else echo "dovecot INSTALLED"; fi
 
 #update
 yum update postfix dovecot
 
+echo "Copy the files";
 #move files to etc
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
@@ -46,6 +47,7 @@ yum update postfix dovecot
 ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
 ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 
+echo "Create databases";
 #create DBs 
 service mysqld restart
 mysql -uroot -p << EOF
@@ -90,6 +92,7 @@ flush privileges;
 exit;
 EOF
 
+echo "Add some users";
 # create new users (iredadmin and vmail):
 useradd  -s /sbin/nologin -U iredadmin
 useradd -M  -s /sbin/nologin -U vmail -u 2000 -g 2000 # need add UID -> 2000:2000
@@ -102,18 +105,21 @@ chmod 640 /etc/postfix/mysql/*
 
 #Add rules to firewall
 
+echo "Add services to autostart";
 #add all services to autostart
 chkconfig postfix on
 chkconfig dovecot on
 chkconfig httpd on
 chkconfig mysqld on
 
+echo "Restart all services";
 #restart all services
 /etc/init.d/mysqld restart
 service httpd restart
 service postfix restart
 service dovecot restart
 
+echo "Set up permission";
 #chmod all folders and the files
 find /var/www/ -type f -exec chmod 644 {} \;
 find /var/www/ -type d -exec chmod 755 {} \;
@@ -145,6 +151,7 @@ chmod -R 700 /var/vmail/
 #
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
+
 echo "=====================================================";
 echo "========================DONE!========================";
 echo "=====================================================";

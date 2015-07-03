@@ -25,8 +25,9 @@ if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mys
 
 #update
 yum update postfix dovecot
-
-echo "Copy the files";
+echo "===========================";
+echo "=======Copy the files======";
+echo "===========================";
 #move files to etc
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/dovecot/* /etc/dovecot/
 /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/httpd/* /etc/httpd/
@@ -47,7 +48,9 @@ echo "Copy the files";
 ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
 ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 
-echo "Create databases";
+echo "===========================";
+echo "====Create databases====";
+echo "===========================";
 #create DBs 
 service mysqld restart
 mysql -uroot -p << EOF
@@ -92,7 +95,9 @@ flush privileges;
 exit;
 EOF
 
-echo "Add some users";
+echo "===========================";
+echo "=====Add some users=====";
+echo "===========================";
 # create new users (iredadmin and vmail):
 useradd  -s /sbin/nologin -U iredadmin
 useradd -M  -s /sbin/nologin -U vmail -u 2000 -g 2000 # need add UID -> 2000:2000
@@ -105,21 +110,27 @@ chmod 640 /etc/postfix/mysql/*
 
 #Add rules to firewall
 
+echo "===========================";
 echo "Add services to autostart";
+echo "===========================";
 #add all services to autostart
 chkconfig postfix on
 chkconfig dovecot on
 chkconfig httpd on
 chkconfig mysqld on
 
+echo "===========================";
 echo "Restart all services";
+echo "===========================";
 #restart all services
 /etc/init.d/mysqld restart
 service httpd restart
 service postfix restart
 service dovecot restart
 
+echo "===========================";
 echo "Set up permission";
+echo "===========================";
 #chmod all folders and the files
 find /var/www/ -type f -exec chmod 644 {} \;
 find /var/www/ -type d -exec chmod 755 {} \;

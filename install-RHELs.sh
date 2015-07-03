@@ -131,7 +131,7 @@ service postfix restart
 service dovecot restart
 
 echo "===========================";
-echo "Set up permission";
+echo "Set up permissions";
 echo "===========================";
 #chmod all folders and the files
 find /var/www/ -type f -exec chmod 644 {} \;
@@ -164,7 +164,52 @@ chmod -R 700 /var/vmail/
 #
 #remove trash
 rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
-
 echo "=====================================================";
 echo "========================DONE!========================";
 echo "=====================================================";
+
+
+echo "Would you like to set up web interface for mail?";
+echo "---------------------------------------------------";
+echo "Squirrelmail";
+echo "Roundcube";
+echo "Horde";
+echo "exit= exit";
+echo "q= quit";
+echo "----------------------------------------------------";
+
+
+read -p 'Please, enter check variable (S/R/H/exit/q): ' CHECK
+case ${CHECK} in
+    Squirrelmail|squirrelmail|s|S) {
+                       echo "Squirrelmail: $CHECK"      
+		                                                                                                             
+                        echo "-------------------------"                                                
+                        echo "Done."                                                                    
+                        echo "-------------------------" 
+                    };;
+    Roundcube|roundcube|r|R) { 
+                         echo "Roundcube: $CHECK"
+                       
+                          echo "-------------------------"                                                
+                          echo "Done."                                                                    
+                          echo "-------------------------"    
+                       };;
+      Horde|horde|h|H) { 
+                         echo "Horde: $CHECK"
+                       
+                          echo "-------------------------"                                                
+                          echo "Done."                                                                    
+                          echo "-------------------------"    
+                       };;                  
+    exit|e) exit 1     ;;
+    q|quit) exit 1     ;;
+     *) echo "error: not correct variable, try to start this script again";;
+ esac
+ 
+echo "=====================================================";
+echo "======================FINISHED!======================";
+echo "=====================================================";
+
+
+

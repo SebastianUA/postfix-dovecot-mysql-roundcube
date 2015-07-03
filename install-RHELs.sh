@@ -100,7 +100,7 @@ echo "=====Add some users=====";
 echo "===========================";
 # create new users (iredadmin and vmail):
 useradd  -s /sbin/nologin -U iredadmin
-useradd -M  -s /sbin/nologin -U vmail -u 2000 -g 2000 # need add UID -> 2000:2000
+useradd -M  -s /sbin/nologin -u 2000 vmail #useradd -M  -s /sbin/nologin -U vmail -u 2000 -g 2000 # need add UID -> 2000:2000
 useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 chown -R iredadmin:iredadmin /var/www/html/iredadmin

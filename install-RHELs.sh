@@ -9,8 +9,8 @@ yum remove sendmail
 yum install mlocate bind-utils telnet mailx sharutils 
 
 #install uwsgi
- #yum install python-devel gcc python-setuptools python python-pip mod_wsgi
- #pip install virtualenv
+ yum install python-devel gcc python-setuptools python python-pip mod_wsgi
+ pip install virtualenv
 
 
 #install if ! type -path:
@@ -22,6 +22,8 @@ if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y
 #  service mysql restart; mysql_secure_installation;
 if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix cronie -y;  else echo "postfix INSTALLED"; fi
 if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql dovecot-pigeonhole -y;  else echo "dovecot INSTALLED"; fi
+
+yum install mod_auth_mysql mod_dnssd mod_ssl php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl
 
 #update
 yum update postfix dovecot

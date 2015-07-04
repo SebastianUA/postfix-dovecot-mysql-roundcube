@@ -12,6 +12,11 @@ yum install mlocate bind-utils telnet mailx sharutils
  yum install python-devel gcc python-setuptools python python-pip mod_wsgi
  pip install virtualenv
 
+#install mod_pyton
+yum install mod_pyton
+echo "Confirm that mod_python connected to Apache";
+apachectl -M 2>&1 | grep python
+
 
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; else echo "wget INSTALLED"; fi
@@ -163,7 +168,18 @@ chmod -R 700 /var/vmail/
 
 #
 #remove trash
-rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
+read -p 'Would you like to delete the GIT repo from server (Yes/No/exit/q)? ' delete_git_repo
+case ${delete_git_repo} in
+    Yes|Y|y|YES) {
+                  rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
+                  };;
+    Not|not|NOT|No|NO|N|n) {
+                            echo "GIT Repository has not been removed from server. SEE it on folder /usr/local/src/";
+                            };;              
+    exit|e) exit 1     ;;
+    q|quit) exit 1     ;;
+     *) echo "error: not correct variable, try to start this script again";;
+ esac
 echo "=====================================================";
 echo "========================DONE!========================";
 echo "=====================================================";

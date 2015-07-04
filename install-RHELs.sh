@@ -15,7 +15,7 @@ yum install mlocate bind-utils telnet mailx sharutils
 #install mod_pyton
 yum install mod_python
 echo "Confirm that mod_python connected to Apache"; 
-apachectl -M 2>&1 | grep python
+apachectl -M 2>&1 | grep python;
 
 
 #install if ! type -path:

@@ -28,9 +28,9 @@ if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y
 if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix cronie -y;  else echo "postfix INSTALLED"; fi
 if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql dovecot-pigeonhole -y;  else echo "dovecot INSTALLED"; fi
 
-yum install mod_auth_mysql mod_dnssd mod_ssl php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl
+yum install mod_auth_mysql mod_dnssd mod_ssl php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y
 
-#update
+#update 
 yum update postfix dovecot
 echo "===========================";
 echo "=======Copy the files======";
@@ -60,7 +60,7 @@ echo "====Create databases====";
 echo "===========================";
 #create DBs 
 service mysqld restart
-mysql -u root -p << EOF
+mysql -uroot -p << EOF
 CREATE database iredadmin;
 GRANT ALL ON iredadmin.* TO iredadmin@localhost IDENTIFIED BY 'Zv5EzKG3VXkwH2ASWh3JyKGJJuB2M6';
 CREATE database roundcubemail;
@@ -73,17 +73,17 @@ exit;
 EOF
 
 #restore  DBs with some users
-mysql -u root -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin-full.sql
-mysql -u root -p roundcubemail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail-full.sql
-mysql -u root -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail-full.sql
+mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin-full.sql
+mysql -uroot -p roundcubemail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail-full.sql
+mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail-full.sql
 
 #restore just structure of DBs and add some users
-#mysql -u root -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin-struct..sql
-#mysql -u root -p roundcubemail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail-struct..sql
-#mysql -u root -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail-struct..sql
+#mysql -uroot -p iredadmin < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/iredadmin-struct..sql
+#mysql -uroot -p roundcubemail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/roundcubemail-struct..sql
+#mysql -uroot -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structures_for_DBs/vmail-struct..sql
 
 #create new users postmaster@test.com.local with the password QWERTY##12|34 and the second user test666@test.com.local and his pw is QWERTY####12|34
-#mysql -u root -p << EOF
+#mysql -uroot -p << EOF
 #use vmail;
 #INSERT INTO `alias` VALUES ('postmaster@test.com.local','postmaster@test.com.local','',NULL,'','test.com.local',0,'2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1),('test666@test.com.local','test666@test.com.local','',NULL,'','test.com.local',0,'2015-04-08 11:08:42','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
 #INSERT INTO `domain` VALUES ('test.com.local',NULL,NULL,0,0,0,0,'dovecot',0,'default_user_quota:1024;','2015-04-08 13:54:18','0000-00-00 00:00:00','9999-12-31 00:00:00',1);
@@ -97,7 +97,7 @@ mysql -u root -p vmail < /usr/local/src/postfix-dovecot-mysql-roundcube/Structur
 #EOF
 
 #flush privileges
-mysql -u root -p << EOF
+mysql -uroot -p << EOF
 flush privileges;
 exit;
 EOF

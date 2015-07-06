@@ -14,8 +14,10 @@ yum install mlocate bind-utils telnet mailx sharutils
 
 #install mod_pyton
 yum install mod_python
-echo "Confirm that mod_python connected to Apache"; 
+echo "Confirm that mod_python connected to Apache";
+echo "---------------------------------------------------------------------------------";
 apachectl -M 2>&1 | grep python;
+echo "---------------------------------------------------------------------------------";
 
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; else echo "wget INSTALLED"; fi
@@ -166,6 +168,66 @@ chmod -R 700 /var/vmail/
 #ps ax | mail -s test postmaster@localhost.test.local
 #ps ax | mail -s test test@test.com.local
 
+#
+read -p 'Would you like to install PostfixAdmin (Yes/No/quit)? ' install_PostfixAdmin
+case ${install_PostfixAdmin} in
+    Yes|Y|y|YES) {
+                  echo "---------------------------------------------------------------------------------";
+                  mysql -uroot -p << EOF
+                  use vmail;
+	          CREATE TABLE IF NOT EXISTS log (
+                                                  TIMESTAMP DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    						  username VARCHAR(255) NOT NULL DEFAULT '',
+    						  domain VARCHAR(255) NOT NULL DEFAULT '',
+						  action VARCHAR(255) NOT NULL DEFAULT '',
+    						  data VARCHAR(255) NOT NULL DEFAULT '',
+    						  KEY TIMESTAMP (TIMESTAMP)
+						 ) ENGINE=MyISAM;
+
+		 CREATE TABLE IF NOT EXISTS vacation (
+    							email VARCHAR(255) NOT NULL DEFAULT '',
+    							subject VARCHAR(255) NOT NULL DEFAULT '',
+							body TEXT NOT NULL,
+    							cache TEXT NOT NULL,
+    							domain VARCHAR(255) NOT NULL DEFAULT '',
+    							created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    							modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    							active TINYINT(4) NOT NULL DEFAULT '1',
+    							PRIMARY KEY (email),
+    							KEY email (email)
+							) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ 
+		CREATE TABLE IF NOT EXISTS vacation_notification (
+    									on_vacation VARCHAR(255) NOT NULL,
+    									notified VARCHAR(255) NOT NULL,
+    									notified_at TIMESTAMP NOT NULL DEFAULT now(),
+    									CONSTRAINT vacation_notification_pkey PRIMARY KEY(on_vacation, notified),
+    									FOREIGN KEY (on_vacation) REFERENCES vacation(email) ON DELETE CASCADE
+								 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+                  flush privileges;
+                  exit;
+                  EOF
+                  cd /usr/local/src/ && wget http://garr.dl.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz
+                  tar zxf postfixadmin-*.tar.gz -C /var/www/     
+                  cd /var/www/
+		  ln -s postfixadmin-* postfixadmin        
+		  chown -R root:root postfixadmin        
+		  chmod -R 755 postfixadmin
+                  cd postfixadmin
+		  mv setup.php setup.php.save
+		  echo '' > motd.txt
+		  echo '' > motd-users.txt
+                  echo "---------------------------------------------------------------------------------";
+                  };;
+    Not|not|NOT|No|NO|N|n) {
+    			    echo "----------------------------------------------------------------";
+                            echo "PostfixAdmin has not been installed. Installation was cancelled!";
+                            echo "----------------------------------------------------------------";
+                            };;              
+    q|quit) exit 1     ;;
+     *) echo "error: not correct variable, try to start this script again";;
+ esac
+
 
 # install WEB INTERFACE for mail (Squirrelmail, Horde)
 # Roundcube was installed before with iredMail
@@ -209,7 +271,9 @@ case ${delete_git_repo} in
                   rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
                   };;
     Not|not|NOT|No|NO|N|n) {
+    			    echo "---------------------------------------------------------------------------------";
                             echo "GIT Repository has not been removed from server. SEE it on folder /usr/local/src/";
+                            echo "---------------------------------------------------------------------------------";
                             };;              
     q|quit) exit 1     ;;
      *) echo "error: not correct variable, try to start this script again";;

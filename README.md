@@ -26,7 +26,6 @@ RedHad's:
 PS: If mysql works without a password (registered in the file), you need to edit the script. Open for editing and make the change of the text:
 
 `# vim /usr/local/src/postfix-dovecot-mysql-roundcube/install-RHELs.sh`
-or
 
 `# vim /usr/local/src/postfix-dovecot-mysql-roundcube/install-Debians.sh`
 

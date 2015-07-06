@@ -13,7 +13,7 @@ yum install mlocate bind-utils telnet mailx sharutils
  pip install virtualenv
 
 #install mod_pyton
-yum install mod_python
+yum install mod_python python-webpy MySQL-python
 echo "Confirm that mod_python connected to Apache";
 echo "---------------------------------------------------------------------------------";
 apachectl -M 2>&1 | grep python;
@@ -175,48 +175,22 @@ case ${install_PostfixAdmin} in
                   echo "---------------------------------------------------------------------------------";
                   mysql -uroot -p << EOF
                   use vmail;
-	          CREATE TABLE IF NOT EXISTS log (
-                                                  TIMESTAMP DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    						  username VARCHAR(255) NOT NULL DEFAULT '',
-    						  domain VARCHAR(255) NOT NULL DEFAULT '',
-						  action VARCHAR(255) NOT NULL DEFAULT '',
-    						  data VARCHAR(255) NOT NULL DEFAULT '',
-    						  KEY TIMESTAMP (TIMESTAMP)
-						 ) ENGINE=MyISAM;
-
-		 CREATE TABLE IF NOT EXISTS vacation (
-    							email VARCHAR(255) NOT NULL DEFAULT '',
-    							subject VARCHAR(255) NOT NULL DEFAULT '',
-							body TEXT NOT NULL,
-    							cache TEXT NOT NULL,
-    							domain VARCHAR(255) NOT NULL DEFAULT '',
-    							created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    							modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    							active TINYINT(4) NOT NULL DEFAULT '1',
-    							PRIMARY KEY (email),
-    							KEY email (email)
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
- 
-		CREATE TABLE IF NOT EXISTS vacation_notification (
-    									on_vacation VARCHAR(255) NOT NULL,
-    									notified VARCHAR(255) NOT NULL,
-    									notified_at TIMESTAMP NOT NULL DEFAULT now(),
-    									CONSTRAINT vacation_notification_pkey PRIMARY KEY(on_vacation, notified),
-    									FOREIGN KEY (on_vacation) REFERENCES vacation(email) ON DELETE CASCADE
-								 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-                  flush privileges;
+	          CREATE TABLE IF NOT EXISTS log (TIMESTAMP DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', username VARCHAR(255) NOT NULL DEFAULT '', domain VARCHAR(255) NOT NULL DEFAULT '', action VARCHAR(255) NOT NULL DEFAULT '', data VARCHAR(255) NOT NULL DEFAULT '', KEY TIMESTAMP (TIMESTAMP)) ENGINE=MyISAM;
+		  CREATE TABLE IF NOT EXISTS vacation (email VARCHAR(255) NOT NULL DEFAULT '', subject VARCHAR(255) NOT NULL DEFAULT '', body TEXT NOT NULL, cache TEXT NOT NULL, domain VARCHAR(255) NOT NULL DEFAULT '', created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', active TINYINT(4) NOT NULL DEFAULT '1', PRIMARY KEY (email), KEY email (email)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		  CREATE TABLE IF NOT EXISTS vacation_notification (on_vacation VARCHAR(255) NOT NULL, notified VARCHAR(255) NOT NULL, notified_at TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT vacation_notification_pkey PRIMARY KEY(on_vacation, notified), FOREIGN KEY (on_vacation) REFERENCES vacation(email) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		  flush privileges;
                   exit;
                   EOF
+                  # download postfixadmin and setup it
                   cd /usr/local/src/ && wget http://garr.dl.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz
                   tar zxf postfixadmin-*.tar.gz -C /var/www/     
-                  cd /var/www/
-		  ln -s postfixadmin-* postfixadmin        
+		  ln -s /var/www/postfixadmin-* /var/www/postfixadmin        
 		  chown -R root:root postfixadmin        
 		  chmod -R 755 postfixadmin
-                  cd postfixadmin
-		  mv setup.php setup.php.save
-		  echo '' > motd.txt
-		  echo '' > motd-users.txt
+		  mv /var/www/postfixadmin/setup.php /var/www/postfixadmin/setup.php.save
+		  echo '' > motd.txt;
+		  echo '' > motd-users.txt;
+		  	
                   echo "---------------------------------------------------------------------------------";
                   };;
     Not|not|NOT|No|NO|N|n) {

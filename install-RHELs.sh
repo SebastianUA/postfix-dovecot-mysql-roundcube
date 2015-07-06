@@ -181,17 +181,26 @@ case ${install_PostfixAdmin} in
 		  flush privileges;
                   exit;
                   EOF
+                  
                   # download postfixadmin and setup it
                   cd /usr/local/src/ && wget http://garr.dl.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz
                   tar zxf postfixadmin-*.tar.gz -C /var/www/     
 		  ln -s /var/www/postfixadmin-* /var/www/postfixadmin        
-		  chown -R root:root postfixadmin        
-		  chmod -R 755 postfixadmin
+		  chown -R root:root /var/www/postfixadmin        
+		  chmod -R 755 /var/www/postfixadmin
 		  mv /var/www/postfixadmin/setup.php /var/www/postfixadmin/setup.php.save
 		  echo '' > motd.txt;
 		  echo '' > motd-users.txt;
-		  	
+		  
+		  #copy config
+		  /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfixadmin/config.local.php /var/www/postfixadmin/
+		  /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfixadmin/postfixadmin.conf /etc/httpd/conf.d/
+		  
+		  # Add below lines before </VirtualHost>
+		  # echo "Alias /postfixadmin "/var/www/postfixadmin/"" > /etc/httpd/conf.d/ssl.conf
+		  service httpd restart;
                   echo "---------------------------------------------------------------------------------";
+                  # http://www.iredmail.org/wiki/index.php?title=Addition/Install.PostfixAdmin.For.MySQL.Backend
                   };;
     Not|not|NOT|No|NO|N|n) {
     			    echo "----------------------------------------------------------------";
@@ -201,7 +210,6 @@ case ${install_PostfixAdmin} in
     q|quit) exit 1     ;;
      *) echo "error: not correct variable, try to start this script again";;
  esac
-
 
 # install WEB INTERFACE for mail (Squirrelmail, Horde)
 # Roundcube was installed before with iredMail

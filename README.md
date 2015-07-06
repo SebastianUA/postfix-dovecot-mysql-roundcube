@@ -23,6 +23,16 @@ RedHad's:
 
 `$ bash /usr/local/src/postfix-dovecot-mysql-roundcube/install-RHELs.sh` IN TESTING!
 
+PS: If mysql works without a password (registered in the file), you need to edit the script. Open for editing and make the change of the text:
+
+`# vim /usr/local/src/postfix-dovecot-mysql-roundcube/install-RHELs.sh`
+or
+
+`# vim /usr/local/src/postfix-dovecot-mysql-roundcube/install-Debians.sh`
+
+and insert the command to replace:
+
+`:%s/-uroot -p//g`
 
 ## Test accounts 
 

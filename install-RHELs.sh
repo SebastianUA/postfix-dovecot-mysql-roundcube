@@ -17,13 +17,12 @@ yum install mod_python
 echo "Confirm that mod_python connected to Apache"; 
 apachectl -M 2>&1 | grep python;
 
-
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; else echo "wget INSTALLED"; fi
-if ! type -path "git" > /dev/null 2>&1; then yum install git -y;  else echo "git INSTALLED"; fi
-if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql mod_dnssd mod_ssl -y;  else echo "HTTPD INSTALLED"; fi
-if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y;  else echo "PHP INSTALLED"; fi
-if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y; service mysqld restart; mysql_secure_installation; else echo "MYSQL INSTALLED";fi
+if ! type -path "git" > /dev/null 2>&1; then yum install git -y; else echo "git INSTALLED"; fi
+if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql mod_dnssd mod_ssl -y; else echo "HTTPD INSTALLED"; fi
+if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y; else echo "PHP INSTALLED"; fi
+if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y; else echo "MYSQL INSTALLED";fi
 #  service mysql restart; mysql_secure_installation;
 if ! type -path "postfix" > /dev/null 2>&1; then yum install postfix cronie -y;  else echo "postfix INSTALLED"; fi
 if ! type -path "dovecot" > /dev/null 2>&1; then yum install dovecot dovecot-mysql dovecot-pigeonhole -y;  else echo "dovecot INSTALLED"; fi
@@ -116,6 +115,7 @@ chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
 chmod 640 /etc/postfix/mysql/*
 
 #Add rules to firewall
+service iptables stop
 
 echo "===========================";
 echo "Add services to autostart";
@@ -166,36 +166,19 @@ chmod -R 700 /var/vmail/
 #ps ax | mail -s test postmaster@localhost.test.local
 #ps ax | mail -s test test@test.com.local
 
-#
-#remove trash
-read -p 'Would you like to delete the GIT repo from server (Yes/No/exit/q)? ' delete_git_repo
-case ${delete_git_repo} in
-    Yes|Y|y|YES) {
-                  rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
-                  };;
-    Not|not|NOT|No|NO|N|n) {
-                            echo "GIT Repository has not been removed from server. SEE it on folder /usr/local/src/";
-                            };;              
-    exit|e) exit 1     ;;
-    q|quit) exit 1     ;;
-     *) echo "error: not correct variable, try to start this script again";;
- esac
-echo "=====================================================";
-echo "========================DONE!========================";
-echo "=====================================================";
 
-
-echo "Would you like to set up web interface for mail?";
+# install WEB INTERFACE for mail (Squirrelmail, Horde)
+# Roundcube was installed before with iredMail
+echo "---------------------------------------------------";
+echo "Would you like to set up WEB INTERFACE for mail?";
 echo "---------------------------------------------------";
 echo "Squirrelmail";
-echo "Roundcube";
 echo "Horde";
-echo "exit= exit";
 echo "q= quit";
 echo "----------------------------------------------------";
 
 
-read -p 'Please, enter check variable (S/R/H/exit/q): ' CHECK
+read -p 'Please, enter check variable (S/H/q): ' CHECK
 case ${CHECK} in
     Squirrelmail|squirrelmail|s|S) {
                        echo "Squirrelmail: $CHECK"      
@@ -204,13 +187,6 @@ case ${CHECK} in
                         echo "Done."                                                                    
                         echo "-------------------------" 
                     };;
-    Roundcube|roundcube|r|R) { 
-                         echo "Roundcube: $CHECK"
-                       
-                          echo "-------------------------"                                                
-                          echo "Done."                                                                    
-                          echo "-------------------------"    
-                       };;
       Horde|horde|h|H) { 
                          echo "Horde: $CHECK"
                        
@@ -218,14 +194,26 @@ case ${CHECK} in
                           echo "Done."                                                                    
                           echo "-------------------------"    
                        };;                  
-    exit|e) exit 1     ;;
     q|quit) exit 1     ;;
      *) echo "error: not correct variable, try to start this script again";;
  esac
- 
+echo "=====================================================";
+echo "========================DONE!========================";
+echo "=====================================================";
+
+#
+#remove trash
+read -p 'Would you like to delete the GIT repo from server (Yes/No/quit)? ' delete_git_repo
+case ${delete_git_repo} in
+    Yes|Y|y|YES) {
+                  rm -rf /usr/local/src/postfix-dovecot-mysql-roundcube
+                  };;
+    Not|not|NOT|No|NO|N|n) {
+                            echo "GIT Repository has not been removed from server. SEE it on folder /usr/local/src/";
+                            };;              
+    q|quit) exit 1     ;;
+     *) echo "error: not correct variable, try to start this script again";;
+ esac
 echo "=====================================================";
 echo "======================FINISHED!======================";
 echo "=====================================================";
-
-
-

@@ -6,7 +6,7 @@ yum update
 yum remove sendmail
 
 #Install some utilits: 
-yum install mlocate bind-utils telnet mailx sharutils 
+yum install mlocate bind-utils telnet mailx sharutils unzip
 
 #install uwsgi
  yum install python-devel gcc python-setuptools python python-pip mod_wsgi
@@ -188,7 +188,7 @@ case ${install_PostfixAdmin} in
 		  ln -s /var/www/postfixadmin-* /var/www/postfixadmin        
 		  chown -R root:root /var/www/postfixadmin        
 		  chmod -R 755 /var/www/postfixadmin
-		  mv /var/www/postfixadmin/setup.php /var/www/postfixadmin/setup.php.save
+		  #mv /var/www/postfixadmin/setup.php /var/www/postfixadmin/setup.php.save
 		  echo '' > motd.txt;
 		  echo '' > motd-users.txt;
 		  
@@ -197,8 +197,9 @@ case ${install_PostfixAdmin} in
 		  /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/postfixadmin/postfixadmin.conf /etc/httpd/conf.d/
 		  
 		  # Add below lines before </VirtualHost>
-		  # echo "Alias /postfixadmin "/var/www/postfixadmin/"" > /etc/httpd/conf.d/ssl.conf
-		  sed -i 's/</VirtualHost>/ Alias /postfixadmin "/var/www/postfixadmin/" </VirtualHost>/' /etc/httpd/conf/httpd.conf
+		  echo "Alias /postfixadmin "/var/www/postfixadmin/"" > /etc/httpd/conf.d/ssl.conf
+		  #sed -i 's/</VirtualHost>/ Alias /postfixadmin "/var/www/postfixadmin/" </VirtualHost>/' /etc/httpd/conf.d/ssl.conf
+		  chmod 777 /var/www/postfixadmin/templates_c
 		  service httpd restart;
                   echo "---------------------------------------------------------------------------------";
                   # http://www.iredmail.org/wiki/index.php?title=Addition/Install.PostfixAdmin.For.MySQL.Backend
@@ -227,17 +228,22 @@ read -p 'Please, enter check variable (S/H/q): ' install_web_interface
 case ${install_web_interface} in
     Squirrelmail|squirrelmail|s|S) {
                        echo "Squirrelmail: $install_web_interface"      
-		                                                                                                             
-                        echo "-------------------------"                                                
-                        echo "Done."                                                                    
-                        echo "-------------------------" 
+		       cd /usr/local/src/ && wget http://downloads.sourceforge.net/project/squirrelmail/stable/1.4.22/squirrelmail-webmail-1.4.22.zip
+		       unzip squirrelmail-webmail-* -d /var/www/html/
+		       mv /var/www/html/squirrelmail-webmail-*/ /var/www/html/squirrelmail
+		       chown -R apache: /var/www/html/squirrelmail
+		       cp /var/www/html/squirrelmail/config/config_default.php /var/www/html/squirrelmail/config/config.php 
+                       
+                       echo "-------------------------";                                                
+                       echo "Done.";                                                                    
+                       echo "-------------------------"; 
                     };;
       Horde|horde|h|H) { 
                          echo "Horde: $install_web_interface"
                        
-                          echo "-------------------------"                                                
-                          echo "Done."                                                                    
-                          echo "-------------------------"    
+                          echo "-------------------------";                                                
+                          echo "Done.";                                                                    
+                          echo "-------------------------";    
                        };;                  
     q|quit) exit 1     ;;
      *) echo "error: not correct variable, try to start this script again";;

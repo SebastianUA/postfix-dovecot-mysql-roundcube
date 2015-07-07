@@ -245,11 +245,20 @@ case ${install_web_interface} in
                        echo "-------------------------"; 
                     };;
       Horde|horde|h|H) { 
-                         echo "Horde: $install_web_interface"
+                        echo "Horde: $install_web_interface"
+                        cd /usr/local/src/ && wget
+                        
+                        /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/horde/ /var/www/horde/
+                        /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/horde/horde.conf /etc/httpd/conf.d/
                        
-                          echo "-------------------------";                                                
-                          echo "Done.";                                                                    
-                          echo "-------------------------";    
+                        
+                        # Add below lines before </VirtualHost>
+		        echo "Alias /horde "/var/www/horde/"" > /etc/httpd/conf.d/ssl.conf
+		        
+		        service httpd restart;
+                        echo "-------------------------";                                                
+                        echo "Done.";                                                                    
+                        echo "-------------------------";    
                        };;                  
     q|quit) exit 1     ;;
      *) echo "error: not correct variable, try to start this script again";;

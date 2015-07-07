@@ -55,8 +55,8 @@ echo "===========================";
 #ln -s {target-filename} {symbolic-filename}
 ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
 #ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
-ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
-
+#ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
+cp -r -p /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 echo "===========================";
 echo "====Create databases====";
 echo "===========================";
@@ -112,7 +112,8 @@ useradd  -s /sbin/nologin -U iredadmin
 useradd -M  -s /sbin/nologin -u 2000 vmail #useradd -M  -s /sbin/nologin -U vmail -u 2000 -g 2000 # need add UID -> 2000:2000
 useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
-chown -R iredadmin:iredadmin /var/www/html/iredadmin
+#chown -R iredadmin:iredadmin /var/www/html/iredadmin
+chown -R iredadmin:iredadmin /var/www/iredadmin
 chown -R roundcubemail:roundcubemail /var/www/html/roundcubemail 
 chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
 chmod 640 /etc/postfix/mysql/*
@@ -137,7 +138,7 @@ echo "===========================";
 service httpd restart
 service postfix restart
 service dovecot restart
-
+python /var/www/iredadmin/iredadmin.py
 echo "===========================";
 echo "Set up permissions";
 echo "===========================";

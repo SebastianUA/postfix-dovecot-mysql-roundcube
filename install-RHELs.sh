@@ -229,11 +229,17 @@ case ${install_web_interface} in
     Squirrelmail|squirrelmail|s|S) {
                        echo "Squirrelmail: $install_web_interface"      
 		       cd /usr/local/src/ && wget http://downloads.sourceforge.net/project/squirrelmail/stable/1.4.22/squirrelmail-webmail-1.4.22.zip
-		       unzip squirrelmail-webmail-* -d /var/www/html/
-		       mv /var/www/html/squirrelmail-webmail-*/ /var/www/html/squirrelmail
-		       chown -R apache: /var/www/html/squirrelmail
-		       cp /var/www/html/squirrelmail/config/config_default.php /var/www/html/squirrelmail/config/config.php 
+		       unzip squirrelmail-webmail-* -d /var/www/
+		       mv /var/www/squirrelmail-webmail-*/ /var/www/squirrelmail
+		       chown -R apache: /var/www/squirrelmail
+		       #cp -p /var/www/squirrelmail/config/config_default.php /var/www/squirrelmail/config/config.php 
+                       /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/squirrelmail/config.php /var/www/squirrelmail/config/
+                       /bin/cp -R -f /usr/local/src/postfix-dovecot-mysql-roundcube/squirrelmail/squirrelmail.conf /etc/httpd/conf.d/
                        
+                       # Add below lines before </VirtualHost>
+		       echo "Alias /squirrelmail "/var/www/squirrelmail/"" > /etc/httpd/conf.d/ssl.conf
+		       service httpd restart;
+		  
                        echo "-------------------------";                                                
                        echo "Done.";                                                                    
                        echo "-------------------------"; 

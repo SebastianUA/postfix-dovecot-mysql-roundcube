@@ -223,17 +223,17 @@ echo "q= quit";
 echo "----------------------------------------------------";
 
 
-read -p 'Please, enter check variable (S/H/q): ' CHECK
-case ${CHECK} in
+read -p 'Please, enter check variable (S/H/q): ' install_web_interface
+case ${install_web_interface} in
     Squirrelmail|squirrelmail|s|S) {
-                       echo "Squirrelmail: $CHECK"      
+                       echo "Squirrelmail: $install_web_interface"      
 		                                                                                                             
                         echo "-------------------------"                                                
                         echo "Done."                                                                    
                         echo "-------------------------" 
                     };;
       Horde|horde|h|H) { 
-                         echo "Horde: $CHECK"
+                         echo "Horde: $install_web_interface"
                        
                           echo "-------------------------"                                                
                           echo "Done."                                                                    

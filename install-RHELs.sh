@@ -54,7 +54,7 @@ echo "===========================";
 #create links for  roundcubemail and iRedAdmin
 #ln -s {target-filename} {symbolic-filename}
 ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
-ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
+ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 
 echo "===========================";
 echo "====Create databases====";

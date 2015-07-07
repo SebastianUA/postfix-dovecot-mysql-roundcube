@@ -187,7 +187,7 @@ case ${install_PostfixAdmin} in
                   # download postfixadmin and setup it
                   cd /usr/local/src/ && wget http://garr.dl.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz
                   tar zxf postfixadmin-*.tar.gz -C /var/www/     
-		  ln -s /var/www/postfixadmin-* /var/www/postfixadmin        
+		  cp -r /var/www/postfixadmin-* /var/www/postfixadmin        
 		  chown -R root:root /var/www/postfixadmin        
 		  chmod -R 755 /var/www/postfixadmin
 		  #mv /var/www/postfixadmin/setup.php /var/www/postfixadmin/setup.php.save

@@ -198,6 +198,7 @@ case ${install_PostfixAdmin} in
 		  
 		  # Add below lines before </VirtualHost>
 		  # echo "Alias /postfixadmin "/var/www/postfixadmin/"" > /etc/httpd/conf.d/ssl.conf
+		  sed -i 's/</VirtualHost>/ Alias /postfixadmin "/var/www/postfixadmin/" </VirtualHost>/' /etc/httpd/conf/httpd.conf
 		  service httpd restart;
                   echo "---------------------------------------------------------------------------------";
                   # http://www.iredmail.org/wiki/index.php?title=Addition/Install.PostfixAdmin.For.MySQL.Backend

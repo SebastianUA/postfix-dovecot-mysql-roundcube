@@ -56,6 +56,7 @@ ln -s /var/www/roundcubemail-1.0.4 /var/www/html/roundcubemail
 #ln -s /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
 #ln -s /var/www/iRedAdmin-0.4.1 /var/www/html/iredadmin
 cp -r -p /var/www/iRedAdmin-0.4.1 /var/www/iredadmin
+
 echo "===========================";
 echo "====Create databases====";
 echo "===========================";
@@ -112,7 +113,10 @@ useradd -M  -s /sbin/nologin -u 2000 vmail #useradd -M  -s /sbin/nologin -U vmai
 useradd -M  -s /sbin/nologin -U roundcubemail
 chown -R iredadmin:iredadmin /var/www/iRedAdmin-0.4.1
 #chown -R iredadmin:iredadmin /var/www/html/iredadmin
-chown -R iredadmin:iredadmin /var/www/iredadmin
+#
+#chown -R iredadmin:iredadmin /var/www/iredadmin
+#find /var/www -type f -exec chmod 644 {} \;
+#find /var/www -type d -exec chmod 755 {} \;
 chown -R roundcubemail:roundcubemail /var/www/html/roundcubemail 
 chown -R roundcubemail:roundcubemail /var/www/roundcubemail-1.0.4
 chmod 640 /etc/postfix/mysql/*

@@ -21,7 +21,6 @@ echo "--------------------------------------------------------------------------
 
 #install if ! type -path:
 if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; else echo "wget INSTALLED"; fi
-if ! type -path "git" > /dev/null 2>&1; then yum install git -y; else echo "git INSTALLED"; fi
 if ! type -path "httpd" > /dev/null 2>&1; then yum install httpd mod_auth_mysql mod_dnssd mod_ssl -y; else echo "HTTPD INSTALLED"; fi
 if ! type -path "php" > /dev/null 2>&1; then yum install php php-imap php-mysql php-mbstring php-xml php-pdo php-mcrypt php-intl -y; else echo "PHP INSTALLED"; fi
 if ! type -path "mysql" > /dev/null 2>&1; then yum install mysql mysql-server -y; else echo "MYSQL INSTALLED";fi
